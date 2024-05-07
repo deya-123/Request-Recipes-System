@@ -1,0 +1,66 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using OurRecipes.ViewModels
+@model LoginViewModel
+@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutPrimary.cshtml";
+}
+
+<div class="row g-0 flex-fill">
+    <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
+        <div class="container container-tight my-5 px-lg-5">
+            <div class="text-center mb-4">
+                <a href="." class="navbar-brand navbar-brand-autodark"><img src="/dash/static/logo.svg" height="36" alt=""></a>
+            </div>
+            <h2 class="h3 text-center mb-3">
+                Login to your account
+            </h2>
+            <form asp-action="Login" asp-controller="Auth" method="post" autocomplete="off" novalidate>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="UserEmail">Email</label>
+                    <input asp-for="UserEmail" type="text" class="form-control" placeholder="Enter Email">
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" asp-for="UserPassword">Password</label>
+                            <a href="@Url.Action("PasswordResetRequest", "Auth")">I forget Password</a>
+                        </span>
+                    </label>
+                    <div class="input-group input-group-flat">
+                        <input asp-for="UserPassword" type="password" class="form-control" placeholder="Password" autocomplete="off">
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                            </a>
+                        </span>
+                    </div>
+                    <span asp-validation-for="UserPassword" class="text-danger"></span>
+                </div>
+                <div class="mb-2">
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input" />
+                        <span class="form-check-label">Remember me on this device</span>
+                    </label>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                </div>
+            </form>
+            <div class="text-center text-muted mt-3">
+                Don't have account yet? <a href="./Register" tabindex="-1">Sign up</a>
+            </div>
+           
+
+
+        </div>
+    </div>
+    <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
+        <!-- Photo -->
+     @*   <div class="bg-cover h-100 min-vh-100" style="background-image: url(/dash/static/photos/finances-us-dollars-and-bitcoins-currency-money-2.jpg)"></div>
+ *@   </div>
+</div>
+

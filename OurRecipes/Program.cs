@@ -1,5 +1,7 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using OurRecipes.Data;
@@ -25,9 +27,23 @@ namespace OurRecipes
             builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
             builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
-         //  builder.Services.AddInMemoryRateLimiting();
+            //  builder.Services.AddInMemoryRateLimiting();
 
             // Add services to the container.
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+          .AddCookie()
+          .AddGoogle(googleOptions =>
+           {
+           googleOptions.ClientId = "";
+           googleOptions.ClientSecret = "";
+           });
+
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddControllers();
 
@@ -60,18 +76,21 @@ namespace OurRecipes
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-           // app.UseExceptionHandler("/Users/Error");
+            // app.UseExceptionHandler("/Users/Error");
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-           
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseIpRateLimiting();
+            app.UseCookiePolicy();
+            app.UseSession();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseNToastNotify();
             app.MapControllerRoute(

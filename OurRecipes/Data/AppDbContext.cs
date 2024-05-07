@@ -48,7 +48,10 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-  
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseOracle("USER ID=C##deaa;PASSWORD=123456;DATA SOURCE=localhost:1521/xe");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -276,7 +279,7 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.InvoiceId).HasName("INVOICE_PK");
 
-            entity.ToTable("INVOICE");
+            entity.ToTable("INVOICES");
 
             entity.Property(e => e.InvoiceId)
                 .ValueGeneratedOnAdd()
@@ -530,7 +533,7 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.TestimonialId).HasName("TESTIMONIAL_PK");
 
-            entity.ToTable("TESTIMONIAL");
+            entity.ToTable("TESTIMONIALS");
 
             entity.Property(e => e.TestimonialId)
                 .ValueGeneratedOnAdd()
@@ -572,9 +575,26 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.DeletedAt)
                 .HasPrecision(6)
                 .HasColumnName("DELETED_AT");
+            entity.Property(e => e.EmailVerificationToken)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("EMAIL_VERIFICATION_TOKEN");
+            entity.Property(e => e.EmailVerificationTokenExpireDate)
+                .HasColumnType("DATE")
+                .HasColumnName("EMAIL_VERIFICATION_TOKEN_EXPIRE_DATE");
+            entity.Property(e => e.IsEmailVerification)
+                .HasPrecision(1)
+                .HasColumnName("IS_EMAIL_VERIFICATION");
             entity.Property(e => e.ModifiedAt)
                 .HasPrecision(6)
                 .HasColumnName("MODIFIED_AT");
+            entity.Property(e => e.PasswordVerificationToken)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("PASSWORD_VERIFICATION_TOKEN");
+            entity.Property(e => e.PasswordVerificationTokenExpireDate)
+                .HasColumnType("DATE")
+                .HasColumnName("PASSWORD_VERIFICATION_TOKEN_EXPIRE_DATE");
             entity.Property(e => e.RoleId)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("ROLE_ID");
@@ -589,6 +609,10 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(6)
                 .IsUnicode(false)
                 .HasColumnName("USER_GENDER");
+            entity.Property(e => e.UserName)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("USER_NAME");
             entity.Property(e => e.UserPassword)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -598,8 +622,7 @@ public partial class AppDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("USER_PHONE");
         });
-        
-        
+
         OnModelCreatingPartial(modelBuilder);
     }
 

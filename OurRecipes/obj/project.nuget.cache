@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9f/mRqGrbt3npzjpPLzP8VUK8PdAVec8O22ik2etfRduq99QbmzMACLNh8jAVJaYiTxqWzPLqi/tfg7OrS7wKw==",
+  "dgSpecHash": "6q9Aj61Y9x0H4sEARqc/WImz/awlWx0dRau/qO5TBVryEOHF3nTh5ch72+V4zf8Z/VrmQBhO6ULHi+tQWMYxaw==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Source\\Repos\\deya-123\\Request-Recipes-System\\OurRecipes\\OurRecipes.csproj",
   "expectedPackageFiles": [
@@ -63,6 +63,7 @@
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\6.0.0\\microsoft.aspnetcore.authentication.google.6.0.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.authorization.policy\\2.2.0\\microsoft.aspnetcore.authorization.policy.2.2.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",

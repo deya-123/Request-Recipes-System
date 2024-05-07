@@ -15,66 +15,118 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Error.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Index.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Privacy.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/_ViewImports.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/_ViewStart.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Home/Index.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/AdminDash/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5EYXNoXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/PasswordResetRequest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxQYXNzd29yZFJlc2V0UmVxdWVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/ResendVerificationEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZXNlbmRWZXJpZmljYXRpb25FbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/ResetPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZXNldFBhc3N3b3JkQ29uZmlybWF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Auth/VerificationEmailResent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxWZXJpZmljYXRpb25FbWFpbFJlc2VudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/ChiefDash/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hpZWZEYXNoXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Home/Privacy.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/Error.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/ConfirmEmailSuccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbmZpcm1FbWFpbFN1Y2Nlc3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_DashboardLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9EYXNoYm9hcmRMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_DashboardLayoutPrimary.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9EYXNoYm9hcmRMYXlvdXRQcmltYXJ5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_HomeLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ib21lTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Users/ConfirmEmailSuccess.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcQ29uZmlybUVtYWlsU3VjY2Vzcy5jc2h0bWw=
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/UserDash/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlckRhc2hcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Users/Index.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Users/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/_ViewImports.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/_ViewStart.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Shared/_Layout.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-40ixr8ez43
 
-[C:/Users/user/Source/Repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_Layout.cshtml]
+[C:/Users/user/source/repos/deya-123/Request-Recipes-System/OurRecipes/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ridvavpmiq

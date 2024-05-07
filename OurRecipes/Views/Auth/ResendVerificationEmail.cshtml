@@ -1,0 +1,25 @@
+﻿
+@using OurRecipes.ViewModels
+@model ResendVerificationEmailViewModel
+@{
+    Layout = null;
+   
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ResendVerificationEmail</title>
+</head>
+<body>
+    <p>Your verification link has expired. Please enter your email to resend the verification link.</p>
+
+    <form asp-action="ResendVerificationEmail" asp-controller="Auth"  method="post">
+        <input type="hidden" name="EmailToken" value="@Model.EmailToken" />
+        <input type="hidden" name="Email" value="@Model.Email" />
+        <button type="submit">Resend Email</button>
+    </form>
+</body>
+</html>

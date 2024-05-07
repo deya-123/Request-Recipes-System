@@ -24,13 +24,13 @@ namespace OurRecipes.Services
         }
         public static async Task SendEmailAsync(string to, string subject, string htmlMessage)
         {
-            string fromMail = "deaaaldeen45112@gmail.com";
-            string fromPassword = "jjjagamtpjcuekoi";
+            string fromMail = "";
+            string fromPassword = "";
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress(fromMail);
-            message.Subject = "Test Subject";
-            message.To.Add(new MailAddress("deaaaldeen45112@gmail.com"));
+            message.Subject = subject;
+            message.To.Add(new MailAddress(to));
             message.Body = htmlMessage;
             message.IsBodyHtml = true;
 

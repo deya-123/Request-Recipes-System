@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Confirm Email Success";
+    Layout = null; // Assuming you use a shared layout
+}
+
+<div class="text-center">
+    <h1 class="display-4">Thank You!</h1>
+    <p>Your email has been successfully verified.</p>
+    <p>You can now use all the features of our site.</p>
+    <hr>
+    <p>
+        Having trouble? <a href="@Url.Action("Contact", "Home")">Contact us</a>
+    </p>
+    <p>
+        <a class="btn btn-primary" href="@Url.Action("Index", "Home")">Go to Homepage</a>
+    </p>
+</div>
