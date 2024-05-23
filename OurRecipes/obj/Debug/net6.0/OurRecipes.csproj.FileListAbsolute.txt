@@ -1127,3 +1127,5 @@ C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\obj\Debug\
 C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\obj\Debug\net6.0\OurRecipes.genruntimeconfig.cache
 C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\obj\Debug\net6.0\ref\OurRecipes.dll
 C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
+C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Rotativa.AspNetCore.dll

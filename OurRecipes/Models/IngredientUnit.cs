@@ -16,4 +16,6 @@ public partial class IngredientUnit
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 }

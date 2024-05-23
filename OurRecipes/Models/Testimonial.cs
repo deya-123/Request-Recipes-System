@@ -16,4 +16,8 @@ public partial class Testimonial
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public string? TestimonialStatus { get; set; }
+
+    public virtual User? User { get; set; }
 }

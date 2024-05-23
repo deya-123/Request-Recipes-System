@@ -1,0 +1,241 @@
+﻿@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutAdmin.cshtml";
+}
+
+@model ContactInfoViewModel
+
+
+
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Contact Info Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+
+
+        <div class="card">
+            <div class="table-responsive" style="padding : 20px; ">
+                <table id="example" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>LocationOnMap</th>
+                            <th>Address</th>
+                            <th>Edit</th>
+
+                            
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Additional rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-edit" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Home</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="" asp-action="Edit" asp-controller="ContactInformations" method="post" enctype="multipart/form-data">
+
+                    <input asp-for="ContactInfoId" type="text" style="display:none">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email">Email</label>
+                        <input asp-for="Email" type="text" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Phone">Phone</label>
+                        <input asp-for="Phone" type="text" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="LocationOnMap">Location On Map Link </label>
+                        <input asp-for="LocationOnMap" type="text" class="form-control" />
+                        <span asp-validation-for="LocationOnMap" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Address">Addresse</label>
+                        <input asp-for="Address" type="text" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="editForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var table = $('#example').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                "ajax": '@Url.Action("LoadData", "ContactInformations")',
+                "columns": [
+                    { "data": "contactInfoId" },
+                    { "data": "email" },
+                    { "data": "phone" },
+                    { "data": "locationOnMap" },
+                    { "data": "address" },
+                    {
+                        "data": null, // Edit column
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit\" class=\"btn btn-info \">Edit</button>",
+                        "orderable": false
+                    }
+                   
+                ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                    "paginate": {
+                        "first": '<<',  // Change as per need
+                        "last": '>>',  // Change as per need
+                        "next": '>',  // Change as per need
+                        "previous": '<'  // Change as per need
+                    }
+                },
+
+
+            });
+
+            $('#example tbody').on('click', 'button', function () {
+                var action = this.textContent.trim();
+                var rowData = table.row($(this).parents('tr')).data();
+                var contactInfoId = rowData['contactInfoId'];
+
+                if (action === 'Edit') {
+                    $.ajax({
+                        url: '@Url.Action("GetContactInformationById", "ContactInformations")',
+                        type: 'GET',
+                        data: { id: contactInfoId },
+                        success: function (data) {
+
+                            var edit = document.getElementById("editForm");
+                          
+                            edit.Email.value = data.email;
+                            edit.Phone.value = data.phone;
+                            edit.Address.value = data.address;
+                            edit.LocationOnMap.value = data.locationOnMap;
+
+                            edit.ContactInfoId.value = contactInfoId;
+                            edit.action = "@Url.Action("Edit", "ContactInformations")/" + contactInfoId;
+
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error fetching user data:', errorThrown);
+                        }
+                    });
+                }
+
+            });
+
+
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+}
+
+
+    <style>
+        .dataTables_wrapper .dataTable .btn {
+            height: auto;
+            // Adjust button heights padding: 0.375rem 0.75rem;
+            // Bootstrap 4 padding style
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 1.2em 0.4em;
+            // Increase padding around buttons color: #007bff;
+            // Change the text color background-color: #ffffff;
+            // Change background color border: 1px solid #ddd;
+            // Add border margin-right: 5px;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                color: #fff;
+                // Change text color for active/hover background-color: #007bff;
+                // Change background color for active/hover border-color: #007bff;
+                // Change border color for active/hover
+            }
+
+        div.dataTables_wrapper div.dataTables_info {
+            padding-top: 1.85em;
+        }
+
+        .dataTables_filter input {
+            height: 36px; /* Increase input height */
+            padding: 6px 12px; /* Adjust padding for better visual appearance */
+            font-size: 14px; /* Optional: Increase font size if needed */
+        }
+    </style>

@@ -14,4 +14,6 @@ public partial class Role
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

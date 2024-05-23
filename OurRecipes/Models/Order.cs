@@ -20,4 +20,8 @@ public partial class Order
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual Recipe? Recipe { get; set; }
+
+    public virtual User? User { get; set; }
 }

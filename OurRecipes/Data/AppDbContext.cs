@@ -16,11 +16,19 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<About> Abouts { get; set; }
+
+    public virtual DbSet<Card> Cards { get; set; }
+
     public virtual DbSet<Chief> Chiefs { get; set; }
 
     public virtual DbSet<Contact> Contacts { get; set; }
 
+    public virtual DbSet<ContactInfo> ContactInfos { get; set; }
+
     public virtual DbSet<Country> Countries { get; set; }
+
+    public virtual DbSet<Home> Homes { get; set; }
 
     public virtual DbSet<Ingredient> Ingredients { get; set; }
 
@@ -37,6 +45,8 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Recipe> Recipes { get; set; }
 
     public virtual DbSet<RecipeCategory> RecipeCategories { get; set; }
+
+    public virtual DbSet<RecipeCategoryType> RecipeCategoryTypes { get; set; }
 
     public virtual DbSet<RecipeNote> RecipeNotes { get; set; }
 
@@ -57,6 +67,60 @@ public partial class AppDbContext : DbContext
         modelBuilder
             .HasDefaultSchema("C##DEAA")
             .UseCollation("USING_NLS_COMP");
+
+        modelBuilder.Entity<About>(entity =>
+        {
+            entity.HasKey(e => e.AboutId).HasName("ABOUT_PK");
+
+            entity.ToTable("ABOUT");
+
+            entity.Property(e => e.AboutId)
+                .HasColumnType("NUMBER")
+                .HasColumnName("ABOUT_ID");
+            entity.Property(e => e.AboutBody)
+                .HasMaxLength(2000)
+                .IsUnicode(false)
+                .HasColumnName("ABOUT_BODY");
+            entity.Property(e => e.AboutImage)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("ABOUT_IMAGE");
+            entity.Property(e => e.AboutTitle)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("ABOUT_TITLE");
+        });
+
+        modelBuilder.Entity<Card>(entity =>
+        {
+            entity.HasKey(e => e.CardId).HasName("CARDS_PK");
+
+            entity.ToTable("CARDS");
+
+            entity.Property(e => e.CardId)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("CARD_ID");
+            entity.Property(e => e.CardCvv)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasColumnName("CARD_CVV");
+            entity.Property(e => e.CardExpireDate)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("CARD_EXPIRE_DATE");
+            entity.Property(e => e.CardHolderName)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("CARD_HOLDER_NAME");
+            entity.Property(e => e.CardNumber)
+                .HasMaxLength(16)
+                .IsUnicode(false)
+                .HasColumnName("CARD_NUMBER");
+            entity.Property(e => e.CardValue)
+                .HasColumnType("NUMBER(10,2)")
+                .HasColumnName("CARD_VALUE");
+        });
 
         modelBuilder.Entity<Chief>(entity =>
         {
@@ -89,6 +153,11 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserId)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("USER_ID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Chiefs)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("CHIEFS_FK1");
         });
 
         modelBuilder.Entity<Contact>(entity =>
@@ -125,6 +194,34 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("MODIFIED_AT");
         });
 
+        modelBuilder.Entity<ContactInfo>(entity =>
+        {
+            entity.HasKey(e => e.ContactInfoId).HasName("CONTACT_INFO_PK");
+
+            entity.ToTable("CONTACT_INFO");
+
+            entity.Property(e => e.ContactInfoId)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("CONTACT_INFO_ID");
+            entity.Property(e => e.Address)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("ADDRESS");
+            entity.Property(e => e.Email)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("EMAIL");
+            entity.Property(e => e.LocationOnMap)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("LOCATION_ON_MAP");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("PHONE");
+        });
+
         modelBuilder.Entity<Country>(entity =>
         {
             entity.HasKey(e => e.CountryId).HasName("COUNTRIES_PK");
@@ -136,7 +233,7 @@ public partial class AppDbContext : DbContext
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("COUNTRY_ID");
             entity.Property(e => e.CountryName)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("COUNTRY_NAME");
             entity.Property(e => e.CreatedAt)
@@ -149,6 +246,53 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.ModifiedAt)
                 .HasPrecision(6)
                 .HasColumnName("MODIFIED_AT");
+        });
+
+        modelBuilder.Entity<Home>(entity =>
+        {
+            entity.HasKey(e => e.HomeId).HasName("HOME_PK");
+
+            entity.ToTable("HOME");
+
+            entity.Property(e => e.HomeId)
+                .HasColumnType("NUMBER")
+                .HasColumnName("HOME_ID");
+            entity.Property(e => e.FacbookLink)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("FACBOOK_LINK");
+            entity.Property(e => e.HomeDesc)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("HOME_DESC");
+            entity.Property(e => e.HomeImage)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("HOME_IMAGE");
+            entity.Property(e => e.HomeLogo)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("HOME_LOGO");
+            entity.Property(e => e.HomeTitle)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("HOME_TITLE");
+            entity.Property(e => e.HomeWebsiteName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("HOME_WEBSITE_NAME");
+            entity.Property(e => e.InsLink)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("INS_LINK");
+            entity.Property(e => e.WorkingDays)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("WORKING_DAYS");
+            entity.Property(e => e.YoutubeLink)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("YOUTUBE_LINK");
         });
 
         modelBuilder.Entity<Ingredient>(entity =>
@@ -185,6 +329,15 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.RecipeId)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("RECIPE_ID");
+
+            entity.HasOne(d => d.IngredientUnit).WithMany(p => p.Ingredients)
+                .HasForeignKey(d => d.IngredientUnitId)
+                .HasConstraintName("INGREDIENTS_FK2");
+
+            entity.HasOne(d => d.Recipe).WithMany(p => p.Ingredients)
+                .HasForeignKey(d => d.RecipeId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("INGREDIENTS_FK1");
         });
 
         modelBuilder.Entity<IngredientName>(entity =>
@@ -344,6 +497,15 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserId)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("USER_ID");
+
+            entity.HasOne(d => d.Recipe).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.RecipeId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("ORDERS_FK2");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("ORDERS_FK1");
         });
 
         modelBuilder.Entity<Recipe>(entity =>
@@ -370,9 +532,12 @@ public partial class AppDbContext : DbContext
                 .HasPrecision(6)
                 .HasColumnName("MODIFIED_AT");
             entity.Property(e => e.RecipeCardImgPath)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("RECIPE_CARD_IMG_PATH");
+            entity.Property(e => e.RecipeCategoryId)
+                .HasColumnType("NUMBER")
+                .HasColumnName("RECIPE_CATEGORY_ID");
             entity.Property(e => e.RecipeCookingTimeMinutes)
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("RECIPE_COOKING_TIME_MINUTES");
@@ -409,6 +574,16 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("RECIPE_VIDEO_PATH");
+
+            entity.HasOne(d => d.Chief).WithMany(p => p.Recipes)
+                .HasForeignKey(d => d.ChiefId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("RECIPES_FK2");
+
+            entity.HasOne(d => d.RecipeCategory).WithMany(p => p.Recipes)
+                .HasForeignKey(d => d.RecipeCategoryId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("RECIPES_FK1");
         });
 
         modelBuilder.Entity<RecipeCategory>(entity =>
@@ -421,14 +596,17 @@ public partial class AppDbContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasColumnType("NUMBER(38)")
                 .HasColumnName("CATEGORY_ID");
+            entity.Property(e => e.CategoryImage)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("CATEGORY_IMAGE");
             entity.Property(e => e.CategoryName)
                 .HasMaxLength(40)
                 .IsUnicode(false)
                 .HasColumnName("CATEGORY_NAME");
-            entity.Property(e => e.CategoryType)
-                .HasMaxLength(40)
-                .IsUnicode(false)
-                .HasColumnName("CATEGORY_TYPE");
+            entity.Property(e => e.CategoryTypeId)
+                .HasColumnType("NUMBER")
+                .HasColumnName("CATEGORY_TYPE_ID");
             entity.Property(e => e.CreatedAt)
                 .HasPrecision(6)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -439,6 +617,30 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.ModifiedAt)
                 .HasPrecision(6)
                 .HasColumnName("MODIFIED_AT");
+
+            entity.HasOne(d => d.CategoryType).WithMany(p => p.RecipeCategories)
+                .HasForeignKey(d => d.CategoryTypeId)
+                .HasConstraintName("RECIPE_CATEGORIES_FK1");
+        });
+
+        modelBuilder.Entity<RecipeCategoryType>(entity =>
+        {
+            entity.HasKey(e => e.RecipeCategoryTypeId).HasName("RECIPE_CATEGORY_TYPES_PK");
+
+            entity.ToTable("RECIPE_CATEGORY_TYPES");
+
+            entity.Property(e => e.RecipeCategoryTypeId)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("NUMBER")
+                .HasColumnName("RECIPE_CATEGORY_TYPE_ID");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP ")
+                .HasColumnType("DATE")
+                .HasColumnName("CREATED_AT");
+            entity.Property(e => e.RecipeCategoryTypeName)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("RECIPE_CATEGORY_TYPE_NAME");
         });
 
         modelBuilder.Entity<RecipeNote>(entity =>
@@ -472,6 +674,11 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(160)
                 .IsUnicode(false)
                 .HasColumnName("RECIPE_NOTE_TITLE");
+
+            entity.HasOne(d => d.Recipe).WithMany(p => p.RecipeNotes)
+                .HasForeignKey(d => d.RecipeId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("RECIPE_NOTES_FK1");
         });
 
         modelBuilder.Entity<RecipePreparationStep>(entity =>
@@ -501,6 +708,11 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(1000)
                 .IsUnicode(false)
                 .HasColumnName("RECIPE_PREPARATION_STEP_DESCRIPTION");
+
+            entity.HasOne(d => d.Recipe).WithMany(p => p.RecipePreparationSteps)
+                .HasForeignKey(d => d.RecipeId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("RECIPE_PREPARATION_STEPS_FK1");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -549,6 +761,10 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.ModifiedAt)
                 .HasPrecision(6)
                 .HasColumnName("MODIFIED_AT");
+            entity.Property(e => e.TestimonialStatus)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("TESTIMONIAL_STATUS");
             entity.Property(e => e.TestimonialText)
                 .HasMaxLength(300)
                 .IsUnicode(false)
@@ -556,6 +772,11 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserId)
                 .HasColumnType("NUMBER")
                 .HasColumnName("USER_ID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Testimonials)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("TESTIMONIALS_FK1");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -609,6 +830,10 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(6)
                 .IsUnicode(false)
                 .HasColumnName("USER_GENDER");
+            entity.Property(e => e.UserImage)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("USER_IMAGE");
             entity.Property(e => e.UserName)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -621,6 +846,14 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("USER_PHONE");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("USERS_FK1");
+
+            entity.HasOne(d => d.UserCountry).WithMany(p => p.Users)
+                .HasForeignKey(d => d.UserCountryId)
+                .HasConstraintName("USERS_FK2");
         });
 
         OnModelCreatingPartial(modelBuilder);

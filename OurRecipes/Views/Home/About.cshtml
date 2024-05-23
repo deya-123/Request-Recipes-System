@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    var home = (Home)ViewBag.Home;
+    var about = (About)ViewBag.About;
+    var contactInfo = (ContactInfo)ViewBag.ContactInfo;
+
+    var recipesCount = ViewBag.RecipesCount;
+    var usersCount = ViewBag.UsersCount;
+    var chiefsCount = ViewBag.ChiefsCount;
+
+}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__text">
+                    <h2>About</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__links">
+                    <a href="./index.html">Home</a>
+                    <span>About</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- About Section Begin -->
+<section class="about spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="about__video set-bg" data-setbg="/images/@about.AboutImage">
+                  
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="about__text">
+                    <div class="section-title">
+                        <span>ABOUT US</span>
+                        <h2>@about.AboutTitle</h2>
+                    </div>
+                    <p>
+                        @about.AboutBody
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="about__bar">
+                    <div class="about__bar__item">
+                        <p>Recipes</p>
+                        <div id="bar1" class="barfiller">
+                            <div class="tipWrap" style="display: inline;"><span class="tip" id="recipesCount" style="left: 280.521px; transition: left 2s ease-in-out 0s;">@recipesCount</span></div>
+                            <span class="fill" data-percentage="100" style="background: rgb(17, 17, 17); width: 313.5px; transition: width 2s ease-in-out 0s;"></span>
+                        </div>
+                    </div>
+                    <div class="about__bar__item">
+                        <p>Users</p>
+                        <div id="bar2" class="barfiller">
+                            <div class="tipWrap" style="display: inline;"><span class="tip" id="usersCount" style="left: 229.021px; transition: left 2s ease-in-out 0s;">@usersCount</span></div>
+                            <span class="fill" data-percentage="100" style="background: rgb(17, 17, 17); width: 264px; transition: width 2s ease-in-out 0s;"></span>
+                        </div>
+                    </div>
+                    <div class="about__bar__item">
+                        <p>Chiefs</p>
+                        <div id="bar3" class="barfiller">
+                            <div class="tipWrap" style="display: inline;"><span class="tip" id="chiefsCount" style="left: 262.438px; transition: left 2s ease-in-out 0s;">@chiefsCount</span></div>
+                            <span class="fill" data-percentage="100" style="background: rgb(17, 17, 17); width: 297px; transition: width 2s ease-in-out 0s;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Section End -->

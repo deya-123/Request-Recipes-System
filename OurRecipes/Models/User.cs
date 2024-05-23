@@ -36,4 +36,16 @@ public partial class User
     public DateTime? PasswordVerificationTokenExpireDate { get; set; }
 
     public string? UserName { get; set; }
+
+    public string? UserImage { get; set; }
+
+    public virtual ICollection<Chief> Chiefs { get; set; } = new List<Chief>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual Role? Role { get; set; }
+
+    public virtual ICollection<Testimonial> Testimonials { get; set; } = new List<Testimonial>();
+
+    public virtual Country? UserCountry { get; set; }
 }

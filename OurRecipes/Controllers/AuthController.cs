@@ -7,9 +7,11 @@ using OurRecipes.Data;
 using OurRecipes.Models;
 using OurRecipes.Services;
 using OurRecipes.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace OurRecipes.Controllers
 {
+
     public class AuthController : Controller
     {
         private readonly AppDbContext _context;
@@ -27,6 +29,7 @@ namespace OurRecipes.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewBag.Home = _context.Homes.FirstOrDefault();
             return View();
         }
 
@@ -34,75 +37,83 @@ namespace OurRecipes.Controllers
         public IActionResult Login(LoginViewModel loginViewModel)
         {
 
-            if (!ModelState.IsValid) { 
-            
-            
+            ViewBag.Home = _context.Homes.FirstOrDefault();
+            if (!ModelState.IsValid) {
+
+                return View(loginViewModel);
             }
 
-            var user=_context.Users.FirstOrDefault(e => e.UserEmail == loginViewModel.UserEmail && /*PasswordHasher.VerifyPassword(e.UserPassword, */ e.UserPassword==loginViewModel.UserPassword);
-            if (user != null) {
+            var user=_context.Users.FirstOrDefault(e => e.UserEmail == loginViewModel.UserEmail);
 
-                HttpContext.Session.SetInt32("userId",(int) user.UserId);
-                HttpContext.Session.SetString("userName",user.UserName);
-                HttpContext.Session.SetInt32("roleId", (int) user.RoleId);
-                switch (user.RoleId) {
-                    case 1:
-                      return  RedirectToAction("Index", "AdminDash");
-                    case 2:
-                      return RedirectToAction("Index", "UserDash");
-                    case 3:
-                      return   RedirectToAction("Index", "ChiefDash");
+
+            var isUserAndPropertiesNotNull = user is not null && 
+                user.UserName is not null &&
+                user.RoleId is not null &&
+                user.UserPassword is not null &&
+                loginViewModel.UserPassword is not null;
+
+            if (isUserAndPropertiesNotNull) {
+                
+                var isPasswordCorrect=  PasswordHasher.VerifyPassword(user.UserPassword, loginViewModel.UserPassword);
+
+              
+
+
+                if (isPasswordCorrect) {
+
+                    var roleName = _context.Roles.First(role => role.RoleId == user.RoleId).RoleName;
+                    
+                    HttpContext.Session.SetInt32("userId", (int)user.UserId);
+                    HttpContext.Session.SetString("userName", user.UserName);
+                    HttpContext.Session.SetInt32("roleId", (int) user.RoleId);
+                    HttpContext.Session.SetString("roleName", roleName??"");
+                    HttpContext.Session.SetString("userImage",user.UserImage??"");
+                    switch (roleName.ToLower())
+                    {
+                        case "admin":
+                            return RedirectToAction("Index", "AdminDash");
+                        case "customer":
+                            return RedirectToAction("Index", "UserDash");
+                        case "chief":
+
+                            var chief= _context.Chiefs.FirstOrDefault(e => e.UserId == user.UserId);
+                            if (chief != null) {
+                                HttpContext.Session.SetInt32("chiefId", (int)chief.ChiefId);
+                            }
+                       
+                            return RedirectToAction("Index", "ChiefDash");
+                           
+                    }
 
                 }
-            }
 
+
+            }
 
             return View(loginViewModel);
         }
         [HttpGet]
         public IActionResult Register()
         {
+            ViewBag.Home = _context.Homes.FirstOrDefault();
+            ViewBag.Roles = _context.Roles.Where(e => e.RoleName!=null && e.RoleName.ToLower()!="admin").ToList();
+
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
+            ViewBag.Home = _context.Homes.FirstOrDefault();
+            ViewBag.Roles = _context.Roles.Where(e => e.RoleName != null && e.RoleName.ToLower() != "admin").ToList();
+
             if (ModelState.IsValid)
             {
 
                 // Check if the username or email already exists
                 if (_context.Users.Any(u => u.UserEmail == registerViewModel.UserEmail))
                 {
-                    ModelState.AddModelError("", "email already exists.");
-                    return View();
-                }
-
-
-                var user = new User();
-                user.RoleId = registerViewModel.RoleId;
-                user.UserName = registerViewModel.UserName;
-                user.UserPassword = /*PasswordHasher.HashPassword*/(registerViewModel.UserPassword);
-                user.UserEmail = registerViewModel.UserEmail;
-                user.EmailVerificationToken = EmailService.GenerateEmailVerificationToken();
-                user.EmailVerificationTokenExpireDate = DateTime.UtcNow.AddDays(2);
-                _context.Add(user);
-                var effect =await _context.SaveChangesAsync();
-
-                if (effect > 0) {
-                    if (registerViewModel.RoleId == 3)
-                    {
-                        var chief = new Chief();
-                        _context.Add(chief);
-                        await _context.SaveChangesAsync();
-
-                    }
-
-                    var callbackUrl = Url.Action("ConfirmEmail", "Auth", new { userId = user.UserId, token = user.EmailVerificationToken }, protocol: HttpContext.Request.Scheme);
-                    await EmailService.SendEmailAsync(user.UserEmail, "Verification Email", $"<strong>Please confirm your account by clicking <a href='{callbackUrl}'>here</a>.</strong>");
-
-                    TempData["SuccessMessage"] = $"You Registerd Successfully, Now Verificate Your Email, You have 2 days for verification  your email ";
-
-                    _toastNotification.AddSuccessToastMessage("You Registerd Successfully, Now Verificate Your Email, You have 2 days for verification  your email ", new NotyOptions()
+                     //ModelState.AddModelError("", "email already exists.");
+                    _toastNotification.AddErrorToastMessage("email already exists.", new NotyOptions()
                     {
                         ProgressBar = true,
                         Timeout = 2000,
@@ -111,7 +122,69 @@ namespace OurRecipes.Controllers
 
                     });
 
-                    return RedirectToAction(nameof(Login));
+                    return View(registerViewModel);
+                }
+                // Check if the role exists
+
+                var role =_context.Roles.FirstOrDefault(u => u.RoleId == registerViewModel.RoleId);
+                if ( role is null)
+                {
+                  
+                    _toastNotification.AddErrorToastMessage("role doesnot exist", new NotyOptions()
+                    {
+                        ProgressBar = true,
+                        Timeout = 2000,
+                        Theme = "metroui",
+                        Layout = "bottomCenter",
+
+                    });
+
+                    return View(registerViewModel);
+                }
+
+                var user = new User();
+                user.RoleId = registerViewModel.RoleId;
+                user.UserName = registerViewModel.UserName;
+                user.UserPassword = PasswordHasher.HashPassword(registerViewModel.UserPassword);
+                user.UserEmail = registerViewModel.UserEmail;
+                user.EmailVerificationToken = EmailService.GenerateEmailVerificationToken();
+                user.EmailVerificationTokenExpireDate = DateTime.UtcNow.AddDays(2);
+                _context.Add(user);
+                var effect =await _context.SaveChangesAsync();
+
+                if (effect > 0) {
+                    if (role.RoleName?.ToLower() == "chief")
+                    {
+                        var chief = new Chief();
+                        chief.UserId = user.UserId;
+                        _context.Add(chief);
+                        var effectChief= await _context.SaveChangesAsync();
+                        if (effectChief<1) {
+                            return View(registerViewModel);
+                        }
+                    }
+
+                    var callbackUrl = Url.Action("ConfirmEmail", "Auth", new { userId = user.UserId, token = user.EmailVerificationToken }, protocol: HttpContext.Request.Scheme);
+                    try {
+                        await EmailService.SendEmailAsync(user.UserEmail, "Verification Email", $"<strong>Please confirm your account by clicking <a href='{callbackUrl}'>here</a>.</strong>");
+                        TempData["SuccessMessage"] = $"You Registerd Successfully, Now Verificate Your Email, You have 2 days for verification  your email ";
+                        _toastNotification.AddSuccessToastMessage("You Registerd Successfully, Now Verificate Your Email, You have 2 days for verification  your email ", new NotyOptions()
+                        {
+                            ProgressBar = true,
+                            Timeout = 2000,
+                            Theme = "metroui",
+                            Layout = "bottomCenter",
+
+                        });
+                        return RedirectToAction(nameof(Login));
+                    }
+                    catch (Exception exp) {
+                        user.EmailVerificationToken =null;
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                   
+                    
 
                 }
                
@@ -296,10 +369,11 @@ namespace OurRecipes.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-
+        [HttpGet]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
+            ViewBag.Home = _context.Homes.FirstOrDefault();
             return RedirectToAction("Login");
         }
 

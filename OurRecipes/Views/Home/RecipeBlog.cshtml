@@ -1,0 +1,422 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    var home = (Home)ViewBag.Home;
+    var about = (About)ViewBag.About;
+    var contactInfo = (ContactInfo)ViewBag.ContactInfo;
+    var categories = (List<RecipeCategory>)ViewBag.Categories;
+    var chiefs = (List<Chief>)ViewBag.Chiefs;
+    var testimonials = (List<Testimonial>)ViewBag.Testimonials;
+    var recipesCount = ViewBag.RecipesCount;
+    var usersCount = ViewBag.UsersCount;
+    var chiefsCount = ViewBag.ChiefsCount;
+
+}
+
+<style>
+
+    .customSelect {
+        appearance: none; /* Remove default styling */
+        -webkit-appearance: none; /* For Safari */
+        -moz-appearance: none; /* For Firefox */
+        background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE2IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuNzAwNzYsMEw4LjAwMTYyLDYuMTc5NjFMMTQuMjk5MiwwTDExLjcwMTEsMGwtMy4yOTg5LDQuNzAwNzZMMy43MDA3LDBMMTUuOTk5LDBMMTguMjk5MiwwTDguMDAxNjIsMTYuMTYwM0w4LjAwMTYyLDE2LjE2MDNMMTIuMjk5MiwyM0w0LjAwMDA3LDI2TDAuNzk5OTcsMjJMMTQuMjk5MiwyM0wwLjAwMDA2NzU1NiwzMkwwLjAwMDA2NzU1NiwzMkwxMC43MDQ5LDMyTDE0LjYwMDA3LDMyTDAsMzJMMTYsMzJMMTcuMjk5MiwyMkwxNi45OTk3LDMxTDIuMDAwNzYsMzJMMTUuOTk5MiwyMkwxNi45OTk2LDMwTDEwLjE5OTIsMjBMMTAuMTk5MiwyMEwwLjQ5OTk3MywyMEwwLjcwMDAyLDE3TDEwLjE5OTIsMjBMMTQuMjk5MiwyMEwxMC43MDQ5LDIwTDAuNzk5OTcsMjJMNS4yOTk5LDIwTDcuNjAwMDcsMjBMMjAuNzk5Miw5QzE5Ljk5OTUsNS42NjcwNSAxNy41OTk5LDQsMTQsNGwtMy4yOTg5LDcuMTYwMzYsMzYsNDBMNiw0TDIuNjAwMDcsNEwwLjgwMDAyMiwxMEwwLjAwMDAxNTU1LDE0QzE1LjQ0MTgsMTQsMTYsMTAsMTYsMGw2LDYgMTgsMzAgMiwxMCIgc3R5bGU9ImZpbGw6YmxhY2s7IGZpbGwtcnVsZTpub256ZXJvOyIgZmlsbD0iYmxhY2siLz48L3N2Zz4=') no-repeat right 10px center; /* Custom down arrow icon */
+        padding-right: 30px; /* Space for the arrow */
+    }
+
+        .customSelect::-ms-expand {
+            display: none; /* Hide the default arrow in IE */
+        }
+
+</style>
+
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__text">
+                    <h2>Blog</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__links">
+                    <a href="./index.html">Home</a>
+                    <span>Blog</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="blog spad">
+    <div class="container">
+        <div class="row">
+            <div id="recipesList" class="col-lg-8">
+                <div class="blog__item">
+                    <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-1.jpg" style="background-image: url(&quot;img/blog/blog-1.jpg&quot;);">
+                        <div class="blog__pic__inner">
+                            <div class="label">Recipes</div>
+                            <ul>
+                                <li>By <span>James Myers</span></li>
+                                <li>13 Nov 2020</li>
+                                <li>112 Views</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog__item__text">
+                        <h2>Delivering Kisses And Miracles</h2>
+                        <p>
+                            Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
+                            a gourmet delight. By using herbs in your cooking you can easily change the flavors of
+                            your recipes in many different ways, according to which herbs you add...
+                        </p>
+                        <a href="#">READ MORE</a>
+                    </div>
+                </div>
+                <div class="blog__item">
+                    <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-2.jpg" style="background-image: url(&quot;img/blog/blog-2.jpg&quot;);">
+                        <div class="blog__pic__inner">
+                            <div class="label">Recipes</div>
+                            <ul>
+                                <li>By <span>James Myers</span></li>
+                                <li>13 Nov 2020</li>
+                                <li>112 Views</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog__item__text">
+                        <h2>Make Grilling A Healthy Experience</h2>
+                        <p>
+                            Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
+                            a gourmet delight. By using herbs in your cooking you can easily change the flavors of
+                            your recipes in many different ways, according to which herbs you add...
+                        </p>
+                        <a href="#">READ MORE</a>
+                    </div>
+                </div>
+                <div class="blog__item">
+                    <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-3.jpg" style="background-image: url(&quot;img/blog/blog-3.jpg&quot;);">
+                        <div class="blog__pic__inner">
+                            <div class="label">Recipes</div>
+                            <ul>
+                                <li>By <span>James Myers<div id="extwaiokist" style="display:none" v="fcoon" q="ef82a742" c="1.154" i="30" u="20.66" s="05202423" sg="svr_09102316-ga_05202423-bai_05072421" d="1" w="false" e="" a="2" m="BMe=" vn="3gtra"><div id="extwaigglbit" style="display:none" v="fcoon" q="ef82a742" c="1.154" i="30" u="20.66" s="05202423" sg="svr_09102316-ga_05202423-bai_05072421" d="1" w="false" e="" a="2" m="BMe="></div></div></span></li>
+                                <li>13 Nov 2020</li>
+                                <li>112 Views</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog__item__text">
+                        <h2>Bbq Myths Getting You Down</h2>
+                        <p>
+                            Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
+                            a gourmet delight. By using herbs in your cooking you can easily change the flavors of
+                            your recipes in many different ways, according to which herbs you add...
+                        </p>
+                        <a href="#">READ MORE</a>
+                    </div>
+                </div>
+                <div class="blog__item">
+                    <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-4.jpg" style="background-image: url(&quot;img/blog/blog-4.jpg&quot;);">
+                        <div class="blog__pic__inner">
+                            <div class="label">Recipes</div>
+                            <ul>
+                                <li>By <span>James Myers</span></li>
+                                <li>13 Nov 2020</li>
+                                <li>112 Views</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog__item__text">
+                        <h2>Keep That Cooking Area Clean</h2>
+                        <p>
+                            Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
+                            a gourmet delight. By using herbs in your cooking you can easily change the flavors of
+                            your recipes in many different ways, according to which herbs you add...
+                        </p>
+                        <a href="#">READ MORE</a>
+                    </div>
+                </div>
+                <div class="shop__pagination">
+                    <a href="#">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#"><span class="arrow_carrot-right"></span></a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__item">
+                        <h5>Filters</h5>
+                        <form id="searchForm" >
+                            <input id="recipeNameInput" type="text" name="recipeName" placeholder="Enter recipe name">
+                            <select id="categoryTypeSelect"  name="categoryTypeId" class="nice-select " style="width:100% !important;margin-bottom: 20px;">
+                                <option value=0 >All Types</option>
+                              
+                                @foreach (var type in (List<RecipeCategoryType>)ViewBag.RecipeCategoryTypes)
+                                {
+                                    <option value="@type.RecipeCategoryTypeId">@type.RecipeCategoryTypeName</option>
+                                }
+                            </select>
+
+                           
+                            <select id="recipeCategoryNameSelect" name="categoryNameId" class="nice-select" style="width:100% !important;margin-bottom: 20px;">
+                                <option value=0>Categories Name</option>
+                            </select>
+                            <select id="chiefIdSelect" class="nice-select" name="chiefId" style="width:100% !important;margin-bottom: 20px;">
+                                <option value=0>All Chiefs</option>
+                                @foreach (var chief in chiefs)
+                                {
+                                    <option value="@chief.ChiefId">@chief.User.UserName</option>
+                                }
+                            </select>
+                            <button  id="searchBtn" type="button"  class="site-btn">Search</button>
+                        </form>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h5>Follow me</h5>
+                        <div class="blog__sidebar__social">
+                            <a href="@home.FacbookLink" style="align-content: center;"><i class="fa fa-facebook"></i></a>
+                           
+                            <a href="@home.YoutubeLink" style="align-content: center;"><i class="fa fa-youtube-play"></i></a>
+                            <a href="@home.InsLink" style="align-content: center;"><i class="fa fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h5>Popular posts</h5>
+
+                        <div class="blog__sidebar__recent">
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="img/blog/br-1.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h4>Secret To Cooking Vegetables</h4>
+                                    <span>13 Nov 2020</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="img/blog/br-2.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h4>Bbq Myths Getting You Down</h4>
+                                    <span>13 Nov 2020</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="img/blog/br-3.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h4>Save Money The Crock Pot Way</h4>
+                                    <span>13 Nov 2020</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="img/blog/br-4.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h4>Grilling Tips For The Dog Days Of Summer</h4>
+                                    <span>13 Nov 2020</span>
+                                </div>
+                            </a>
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img src="img/blog/br-5.jpg" alt="">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h4>Barbeque Techniques Two Methods To Consider</h4>
+                                    <span>13 Nov 2020</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h5>Category Types With Recipes</h5>
+                        <div class="blog__sidebar__item__categories">
+                            <ul>
+                               
+                              
+
+                            @{
+
+                                    foreach (var type in ViewBag.TypeWithRecipes)
+                                {
+                                                                                                                <li><a href="#" id="@type.RecipeCategoryTypeId"> @type.RecipeCategoryTypeName <span>@type.RecipeCount</span></a></li>
+
+                                }
+
+                            
+                            }
+                           
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h5>NEWsLETTeR</h5>
+                        <p>Subscribe to our newsletter and get our newest updates right on your inbox.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Your email">
+                            <label for="agg">
+                                I agree to the terms &amp; conditions
+                                <input type="checkbox" id="agg">
+                                <span class="checkmark"></span>
+                            </label>
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+    
+        let selectType= document.getElementById('categoryTypeSelect');
+        let selectChief = document.getElementById('chiefIdSelect');
+        let selectCategory = document.getElementById('recipeCategoryNameSelect');
+        let catId=  localStorage.getItem('selectedCatId');
+        let typeId= localStorage.getItem('selectedTypeId');
+        let chId= localStorage.getItem('selectedChiefId');
+
+
+    selectType.addEventListener('change', () => {
+        var typeIdd = selectType.value;
+
+
+        $.ajax({
+            url: '/RecipeCategories/GetCateogryByTypeId',
+            type: 'GET',
+            data: { id: typeIdd },
+            success: function (data) {
+
+                console.log("mid");
+
+                $('#recipeCategoryNameSelect').empty();
+                $('#recipeCategoryNameSelect').append($('<option>').text("all cateogries").attr('value', 0));
+                $.each(data, function (index, item) {
+                    $('#recipeCategoryNameSelect').append($('<option>').text(item.categoryName).attr('value', item.categoryId));
+                });
+
+                if(catId!=null)
+                {
+                selectCategory.value=catId;    
+                localStorage.removeItem("selectedTypeId");
+                localStorage.removeItem("selectedCatId");
+                $('#searchBtn').click();
+                }
+
+
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
+    });
+
+  
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+
+
+
+
+
+
+         $('#searchBtn').on('click', function () {
+
+
+            var recipeName = $('#recipeNameInput').val();
+            var categoryTypeId = $('#categoryTypeSelect').val();
+            var recipeCategoryNameId = $('#recipeCategoryNameSelect').val();
+            var chiefId = $('#chiefIdSelect').val();
+
+
+
+
+
+            var recipesList = document.getElementById("recipesList");
+
+            $.ajax({
+                url: '@Url.Action("SearchRecipe", "Recipes")', // Change the URL to your backend endpoint
+                type: 'GET',
+                data: { recipeName: recipeName, categoryTypeId: categoryTypeId, categoryNameId: recipeCategoryNameId, chiefId: chiefId },
+                success: function (response) {
+
+                    recipesList.innerHTML = '';
+
+                    console.log(response);
+                    var list = "";
+                    response.forEach(recipe => {
+
+                        list += ` <div class="blog__item">
+                                        <div class="blog__item__pic set-bg" data-setbg="/recipesImage/${recipe.recipeCardImgPath}" style="background-image: url(&quot;/recipesImage/${recipe.recipeCardImgPath}&quot;);">
+                                    <div class="blog__pic__inner">
+                                            <div class="label">$ ${recipe.recipePrice}</div>
+                                        <ul>
+                                                <li>By <span>${recipe.userName}</span></li>
+                                            <li>${recipe.createdAt}</li>
+                                            <li>112 Views</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="blog__item__text">
+                                    <h2>${recipe.recipeName}</h2>
+                                    <p>
+                                        ${recipe.recipeDescription}
+                                    </p>
+                                        <a href="/Home/Checkout/${recipe.recipeId}">Order Now</a>
+                                </div>
+                            </div>`
+
+
+                        console.log(`ID: ${recipe.recipeName}`);
+
+                    });
+
+                    recipesList.innerHTML = list;
+
+
+
+                    // table.clear().rows.add(response.data).draw();
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error(error);
+                }
+            });
+
+
+        });
+
+
+        if (chId != null) {
+            selectChief.value = chId;
+            localStorage.removeItem("selectedChiefId");
+            $('#searchBtn').click();
+        }
+
+        if (typeId != null) {
+            selectType.value = typeId;
+            console.log("before event");
+            selectType.dispatchEvent(new Event('change'));
+            console.log("after event");
+        }
+
+        if (chId == null && typeId == null) {
+
+            $('#searchBtn').click();
+        }
+      
+    });
+  
+
+</script>

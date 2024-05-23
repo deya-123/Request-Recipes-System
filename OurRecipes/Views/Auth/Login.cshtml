@@ -13,12 +13,14 @@
     <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
         <div class="container container-tight my-5 px-lg-5">
             <div class="text-center mb-4">
-                <a href="." class="navbar-brand navbar-brand-autodark"><img src="/dash/static/logo.svg" height="36" alt=""></a>
+                <a href="/" class="navbar-brand navbar-brand-autodark"><img src="/images/@ViewBag.Home.HomeLogo" height="36" alt=""></a>
             </div>
             <h2 class="h3 text-center mb-3">
                 Login to your account
             </h2>
-            <form asp-action="Login" asp-controller="Auth" method="post" autocomplete="off" novalidate>
+            <form asp-action="Login" class="card card-md" asp-controller="Auth" method="post" autocomplete="off" novalidate>
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Login</h2>
                 <div class="mb-3">
                     <label class="form-label" asp-for="UserEmail">Email</label>
                     <input asp-for="UserEmail" type="text" class="form-control" placeholder="Enter Email">
@@ -49,6 +51,7 @@
                 <div class="form-footer">
                     <button type="submit" class="btn btn-primary w-100">Sign in</button>
                 </div>
+                </div>
             </form>
             <div class="text-center text-muted mt-3">
                 Don't have account yet? <a href="./Register" tabindex="-1">Sign up</a>
@@ -60,7 +63,7 @@
     </div>
     <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
         <!-- Photo -->
-     @*   <div class="bg-cover h-100 min-vh-100" style="background-image: url(/dash/static/photos/finances-us-dollars-and-bitcoins-currency-money-2.jpg)"></div>
- *@   </div>
+        <div class="bg-cover h-100 min-vh-100" style="background-image: url(/home/img/cooking-wallpapers.jpg)"></div>
+   </div>
 </div>
 

@@ -20,4 +20,8 @@ public partial class Ingredient
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual IngredientUnit? IngredientUnit { get; set; }
+
+    public virtual Recipe? Recipe { get; set; }
 }

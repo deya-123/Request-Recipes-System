@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "6q9Aj61Y9x0H4sEARqc/WImz/awlWx0dRau/qO5TBVryEOHF3nTh5ch72+V4zf8Z/VrmQBhO6ULHi+tQWMYxaw==",
+  "dgSpecHash": "PsYmsjIO7YOagPyAJ8ttiWqia3pTrcVCyL0LUFK1t+xo8gVsNs+UeSsljJvfirI4LSWTBtYtlzHTm+Hv+NqReQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Source\\Repos\\deya-123\\Request-Recipes-System\\OurRecipes\\OurRecipes.csproj",
+  "projectFilePath": "C:\\Users\\user\\source\\repos\\deya-123\\Request-Recipes-System\\OurRecipes\\OurRecipes.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\aspnetcorehero.toastnotification\\1.1.0\\aspnetcorehero.toastnotification.1.1.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\aspnetcoreratelimit\\5.0.0\\aspnetcoreratelimit.5.0.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\bouncycastle.cryptography\\2.3.0\\bouncycastle.cryptography.2.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
@@ -173,6 +174,7 @@
     "C:\\Users\\user\\.nuget\\packages\\odp.netcore\\2.0.12\\odp.netcore.2.0.12.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\oracle.entityframeworkcore\\7.21.9\\oracle.entityframeworkcore.7.21.9.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\oracle.manageddataaccess.core\\3.21.90\\oracle.manageddataaccess.core.3.21.90.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\rotativa.aspnetcore\\1.3.2\\rotativa.aspnetcore.1.3.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

@@ -1,10 +1,12 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreRateLimit;
+using Humanizer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using OurRecipes.Data;
+using Rotativa.AspNetCore;
 using Sieve.Services;
 using System.Configuration;
 
@@ -31,19 +33,19 @@ namespace OurRecipes
 
             // Add services to the container.
 
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-          .AddCookie()
-          .AddGoogle(googleOptions =>
-           {
-           googleOptions.ClientId = "";
-           googleOptions.ClientSecret = "";
-           });
+            //  builder.Services.AddAuthentication(options =>
+            //  {
+            //      options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //      options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            //  })
+            //.AddCookie()
+            //.AddGoogle(googleOptions =>
+            // {
+            // googleOptions.ClientId = "";
+            // googleOptions.ClientSecret = "";
+            // });
 
-
+           
             builder.Services.AddControllersWithViews();
             builder.Services.AddControllers();
 
@@ -66,9 +68,9 @@ namespace OurRecipes
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
             builder.Services.AddRazorPages();
-
+            builder.Services.AddAutoMapper(typeof(Program));
             var app = builder.Build();
-
+            RotativaConfiguration.Setup(app.Environment.WebRootPath, @"C:\\Program Files\\wkhtmltopdf\\bin");
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

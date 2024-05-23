@@ -7,9 +7,13 @@ using SendGrid.Helpers.Mail;
 using SendGrid;
 using System.Net;
 using System.Net.Mail;
+using Org.BouncyCastle.Utilities.Net;
+
+using Attachment = System.Net.Mail.Attachment;
+
 namespace OurRecipes.Services
 {
-  
+
 
     public class EmailService
     {
@@ -24,26 +28,88 @@ namespace OurRecipes.Services
         }
         public static async Task SendEmailAsync(string to, string subject, string htmlMessage)
         {
-            string fromMail = "";
-            string fromPassword = "";
+            string fromMail = "deaaaldeen45112@gmail.com";
+            string fromPassword = "jjjagamtpjcuekoi";
 
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(fromMail);
-            message.Subject = subject;
-            message.To.Add(new MailAddress(to));
-            message.Body = htmlMessage;
-            message.IsBodyHtml = true;
 
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+            using (var smtpClient = new SmtpClient("smtp.gmail.com"))
             {
-                Port = 587,
-                Credentials = new NetworkCredential(fromMail, fromPassword),
-                EnableSsl = true,
-            };
 
-           await smtpClient.SendMailAsync(message);
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential(fromMail, fromPassword);
+                smtpClient.EnableSsl = true;
+
+
+                using (var message = new MailMessage())
+                {
+
+                    message.From = new MailAddress(fromMail);
+                    message.Subject = subject;
+                    message.To.Add(new MailAddress(to));
+                    message.Body = htmlMessage;
+                    message.IsBodyHtml = true;
+
+                    await smtpClient.SendMailAsync(message);
+                }
+
+
+
+            }
+
+
         }
+        public static async Task SendEmailWithAttachment(Stream attachmentStream, string to, string subject, string body)
+        {
+
+
+
+
+            string fromMail = "deaaaldeen45112@gmail.com";
+            string fromPassword = "jjjagamtpjcuekoi";
+
+
+            using (var smtpClient = new SmtpClient("smtp.gmail.com"))
+            {
+
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential(fromMail, fromPassword);
+                smtpClient.EnableSsl = true;
+
+
+                using (var message = new MailMessage())
+                {
+
+                    message.From = new MailAddress(fromMail);
+                    message.Subject = subject;
+                    message.To.Add(new MailAddress(to));
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+                    message.Attachments.Add(new Attachment(attachmentStream, "RecipePdfTemplate.pdf", "application/pdf"));
+                    await smtpClient.SendMailAsync(message);
+                }
+
+
+
+            }
+
+
+        }
+     
     }
-
-
 }
+
+//MailMessage message = new MailMessage();
+//message.From = new MailAddress(fromMail);
+//message.Subject = subject;
+//message.To.Add(new MailAddress(to));
+//message.Body = htmlMessage;
+//message.IsBodyHtml = true;
+
+//var smtpClient = new SmtpClient("smtp.gmail.com")
+//{
+//    Port = 587,
+//    Credentials = new NetworkCredential(fromMail, fromPassword),
+//    EnableSsl = true,
+//};
+
+//await smtpClient.SendMailAsync(message);

@@ -18,4 +18,8 @@ public partial class Chief
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+
+    public virtual User? User { get; set; }
 }

@@ -13,12 +13,10 @@
     <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
         <div class="container container-tight my-5 px-lg-5">
             <div class="text-center mb-4">
-                <a href="." class="navbar-brand navbar-brand-autodark"><img src="/dash/static/logo.svg" height="36" alt=""></a>
+                 <a href="/" class="navbar-brand navbar-brand-autodark"><img src="/images/@ViewBag.Home.HomeLogo" height="36" alt=""></a></a>
             </div>
-            <h2 class="h3 text-center mb-3">
-                Login to your account
-            </h2>
-            <form class="card card-md" asp-action="Register" asp-controller="Auth" method="post" >
+            
+            <form id="form" class="card card-md" asp-action="Register" asp-controller="Auth" method="post" >
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Create new account</h2>
                     <div class="mb-3">
@@ -47,9 +45,15 @@
                     <div class="mb-3">
                         <label class="form-label">Role</label>
                         <select asp-for="RoleId" class="form-select">
-                            <option value="2">Customer</option>
-                            <option value="3">Chief</option>
-                        </select>
+
+                            @foreach(var role in (List<Role>)ViewBag.Roles){
+
+
+                                <option value="@role.RoleId">@role.RoleName</option>
+                        
+
+                            }
+                             </select>
                         <span asp-validation-for="RoleId" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -64,12 +68,14 @@
                 </div>
             </form>
             <div class="text-center text-muted mt-3">
-                Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a>
+                Don't have account yet? <a asp-action="Login" asp-controller="Auth" tabindex="-1">Sign in</a>
             </div>
         </div>
     </div>
     <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
         <!-- Photo -->
-       @* <div class="bg-cover h-100 min-vh-100" style="background-image: url(/dash/static/photos/finances-us-dollars-and-bitcoins-currency-money-2.jpg)"></div>
-*@    </div>
+        <div class="bg-cover h-100 min-vh-100" style="background-image: url(/home/img/cooking-wallpapers.jpg)"></div>
+    </div>
 </div>
+
+

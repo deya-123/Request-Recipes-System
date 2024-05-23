@@ -1,0 +1,417 @@
+﻿@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutAdmin.cshtml";
+}
+@model ContactViewModel
+
+
+
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Contacts Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+                  @*  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Create new Contact
+                    </a>*@
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+
+        <div class="card">
+            <div class="table-responsive" style="padding : 20px; ">
+                <table id="example" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                         
+
+                            <th>Contact Id</th>
+                      
+                            <th>Contact Sender Email</th>
+                            <th>Contact Sender Name</th>
+                            <th>Contact Message</th>
+                            <th>Created At</th>
+                           
+                            <th>Edit</th>
+                            <th>Delete</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Additional rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-delete" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <form id="deleteForm" class="" asp-action="Delete" asp-controller="Contacts" method="post">
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove this Item? What you've done cannot be undone.</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-edit" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Testimonial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="" asp-action="Edit" asp-controller="Testimonials" method="post">
+                
+
+                    <input asp-for="ContactId" type="text" style="display:none">
+
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ContactMessage">Contact Message</label>
+                        <input  readonly asp-for="ContactMessage"  type="text" class="form-control" placeholder="Enter Text"/>
+                        <span asp-validation-for="ContactMessage" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ContactSenderName">Contact Sender Name</label>
+                        <input  readonly asp-for="ContactSenderName" type="text" class="form-control" placeholder="Enter Text"/>
+                        <span asp-validation-for="ContactSenderName" class="text-danger"></span>
+                    </div>
+                       <div class="mb-3">
+                        <label class="form-label" asp-for="ContactSenderEmail">Contact Sender Email</label>
+                        <textarea  readonly asp-for="ContactSenderEmail" type="text" class="form-control" placeholder="Enter Text"></textarea>
+                        <span asp-validation-for="ContactSenderEmail" class="text-danger"></span>
+                    </div>
+                     
+             
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+              @*  <button type="submit" form="editForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit
+                </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Contact</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createForm" class="" asp-action="Create" asp-controller="Contacts" method="post">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ContactMessage">Contact Message</label>
+                        <textarea asp-for="ContactMessage" type="text" class="form-control" placeholder="Enter Text"></textarea>
+                        <span asp-validation-for="ContactMessage" class="text-danger"></span>
+                    </div>
+                  
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ContactSenderName">Contact Sender Name</label>
+                        <input asp-for="ContactSenderName" type="text" class="form-control" placeholder="Enter Text"/>
+                        <span asp-validation-for="ContactSenderName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ContactSenderEmail">Contact Sender Email</label>
+                        <input asp-for="ContactSenderEmail" type="text" class="form-control" placeholder="Enter Text"/>
+                        <span asp-validation-for="ContactSenderEmail" class="text-danger"></span>
+                    </div>
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="createForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Contact
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+   
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var table = $('#example').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                "ajax": '@Url.Action("LoadData", "Contacts")',
+                "columns": [
+                    { "data": "contactId" },
+                    { "data": "contactSenderEmail" },
+                    { "data": "contactSenderName" },
+                    {
+                        "data": "contactMessage",
+                        "render": function (data, type, full, meta) {
+                            // Display only the first 100 characters followed by "..." if the text exceeds that length
+                            return data!=null && data.length > 10 ? data.substr(0, 10) + "..." : data;
+                        }
+                    },
+                    { "data": "createdAt" },
+                  
+                    {
+                        "data": null, // Edit column
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit\" class=\"btn btn-info \">Details</button>",
+                        "orderable": false
+                    },
+                    {
+                        "data": null, // Delete column
+                        "defaultContent": "<button data-bs-target=\"#modal-delete\" data-bs-toggle=\"modal\" class=\"btn btn-danger \">Delete</button>",
+                        "orderable": false
+                    }
+
+                ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                    "paginate": {
+                        "first": '<<',  // Change as per need
+                        "last": '>>',  // Change as per need
+                        "next": '>',  // Change as per need
+                        "previous": '<'  // Change as per need
+                    }
+                },
+
+
+            });
+
+            $('#example tbody').on('click', 'button', function () {
+                var action = this.textContent.trim();
+                var rowData = table.row($(this).parents('tr')).data();
+                var contactId = rowData['contactId']; // Assuming 'userId' is the column name for the ID
+
+                if (action === 'Details') {
+                    $.ajax({
+                        url: '@Url.Action("GetContactById", "Contacts")',
+                        type: 'GET',
+                        data: { id: contactId },
+                        success: function (data) {
+                            // Populate modal fields with fetched user data
+                            var edit = document.getElementById("editForm");
+                            edit.ContactSenderEmail.value = data.contactSenderEmail;
+                            edit.ContactSenderName.value = data.contactSenderName;
+                            edit.ContactMessage.value = data.contactMessage;
+                            edit.ContactId.value = contactId;
+                         
+
+                            edit.action = "@Url.Action("Edit", "Contacts")/" + contactId;
+                            // Populate other fields...
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error fetching user data:', errorThrown);
+                        }
+                    });
+                } else if (action === 'Delete') {
+                    // Handle delete action
+                    {
+                        var deleteForm = document.querySelector('#deleteForm');
+                        if (deleteForm) {
+                            deleteForm.action = "@Url.Action("Delete", "Contacts")/" + contactId;
+                        }
+                    }
+                }
+            });
+            //$('#createForm').submit(function (event) {
+            //    // Prevent the default form submission behavior
+            //    event.preventDefault();
+            //     if ($(this).valid()) {
+            //    // Serialize the form data
+            //    var formData = $(this).serialize();
+            //    var currentPage = $('.datatable').DataTable().page();
+            //    // Make an AJAX request to submit the form data
+            //    $.ajax({
+            //        url: $(this).attr('action'),
+            //        type: 'POST',
+            //        data: formData,
+            //        success: function (response) {
+            //            // Handle the success response if needed
+            //            // $('.datatable').DataTable().ajax.reload();
+
+            //            $('.datatable').DataTable().ajax.reload(function () {
+            //                // Restore the current page index
+            //                table.page(currentPage).draw(false);
+            //            });
+            //            console.log('User created successfully.');
+            //        },
+            //        error: function (xhr, textStatus, errorThrown) {
+            //            // Handle the error response if needed
+            //            console.error('Error creating user:', errorThrown);
+            //        }
+            //    });
+            //    }
+            //});
+            $('#editForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                  if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+
+                // Make an AJAX request to submit the form data
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        $('.datatable').DataTable().ajax.reload();
+                        console.log('Testimonial created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+            $('#deleteForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+
+                // Make an AJAX request to submit the form data
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        $('.datatable').DataTable().ajax.reload();
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+}
+
+
+    <style>
+        .dataTables_wrapper .dataTable .btn {
+            height: auto;
+            // Adjust button heights padding: 0.375rem 0.75rem;
+            // Bootstrap 4 padding style
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 1.2em 0.4em;
+            // Increase padding around buttons color: #007bff;
+            // Change the text color background-color: #ffffff;
+            // Change background color border: 1px solid #ddd;
+            // Add border margin-right: 5px;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                color: #fff;
+                // Change text color for active/hover background-color: #007bff;
+                // Change background color for active/hover border-color: #007bff;
+                // Change border color for active/hover
+            }
+
+        div.dataTables_wrapper div.dataTables_info {
+            padding-top: 1.85em;
+        }
+
+        .dataTables_filter input {
+            height: 36px; /* Increase input height */
+            padding: 6px 12px; /* Adjust padding for better visual appearance */
+            font-size: 14px; /* Optional: Increase font size if needed */
+        }
+    </style>

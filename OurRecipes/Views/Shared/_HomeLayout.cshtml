@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@await Component.InvokeAsync("NToastNotify")
+
+
+@{
+
+    var home = (Home)ViewBag.Home;
+  
+
+    
+
+}
+<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -26,6 +37,9 @@
     <link rel="stylesheet" href="~/home/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="~/home/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/home/css/style.css" type="text/css">
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
 
 <body>
@@ -37,35 +51,20 @@
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__cart">
-            <div class="offcanvas__cart__links">
-                <a href="#" class="search-switch"><img src="~/home/img/icon/search.png" alt=""></a>
-                <a href="#"><img src="~/home/img/icon/heart.png" alt=""></a>
-            </div>
-            <div class="offcanvas__cart__item">
-                <a href="#"><img src="~/home/img/icon/cart.png" alt=""> <span>0</span></a>
-                <div class="cart__price">Cart: <span>$0.00</span></div>
-            </div>
-        </div>
+       
         <div class="offcanvas__logo">
-            <a href="~/home/index.html"><img src="~/home/img/logo.png" alt=""></a>
+            <a asp-action="Index" asp-controller="Home"><img src="/images/@ViewBag.Home.HomeLogo" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__option">
             <ul>
-                <li>USD <span class="arrow_carrot-down"></span>
-                    <ul>
-                        <li>EUR</li>
-                        <li>USD</li>
-                    </ul>
+                <li>USD
+                   
                 </li>
-                <li>ENG <span class="arrow_carrot-down"></span>
-                    <ul>
-                        <li>Spanish</li>
-                        <li>ENG</li>
-                    </ul>
+                <li>ENG 
+                
                 </li>
-                <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
+                <li><a asp-action="Login" asp-controller="Auth">Sign in</a> <span class="arrow_carrot-down"></span></li>
             </ul>
         </div>
     </div>
@@ -78,35 +77,24 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="header__top__inner">
-                            <div class="header__top__left">
+                            <div  class="header__top__left">
                                 <ul>
-                                    <li>USD <span class="arrow_carrot-down"></span>
-                                        <ul>
-                                            <li>EUR</li>
-                                            <li>USD</li>
-                                        </ul>
+                                    <li>USD 
                                     </li>
-                                    <li>ENG <span class="arrow_carrot-down"></span>
-                                        <ul>
-                                            <li>Spanish</li>
-                                            <li>ENG</li>
-                                        </ul>
+                                    <li>ENG
                                     </li>
-                                    <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
+                                    <li><a asp-action="Login" asp-controller="Auth" >Sign in</a> <span class="arrow_carrot-down"></span></li>
                                 </ul>
                             </div>
                             <div class="header__logo">
-                                <a href="~/home/index.html"><img src="~/home/img/logo.png" alt=""></a>
+                                <a asp-action="Index" asp-controller="Home"><img src="/images/@ViewBag.Home.HomeLogo" alt=""></a>
                             </div>
                             <div class="header__top__right">
                                 <div class="header__top__right__links">
                                     <a href="#" class="search-switch"><img src="~/home/img/icon/search.png" alt=""></a>
                                     <a href="#"><img src="~/home/img/icon/heart.png" alt=""></a>
                                 </div>
-                                <div class="header__top__right__cart">
-                                    <a href="#"><img src="~/home/img/icon/cart.png" alt=""> <span>0</span></a>
-                                    <div class="cart__price">Cart: <span>$0.00</span></div>
-                                </div>
+                             
                             </div>
                         </div>
                     </div>
@@ -119,21 +107,58 @@
                 <div class="col-lg-12">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="~/home/index.html">Home</a></li>
-                            <li><a href="~/home/about.html">About</a></li>
-                            <li><a href="~/home/shop.html">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="~/home/shop-details.html">Shop Details</a></li>
-                                    <li><a href="~/home/shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="~/home/checkout.html">Check Out</a></li>
-                                    <li><a href="~/home/wisslist.html">Wisslist</a></li>
-                                    <li><a href="~/home/Class.html">Class</a></li>
-                                    <li><a href="~/home/blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="~/home/blog.html">Blog</a></li>
-                            <li><a href="~/home/contact.html">Contact</a></li>
+                            <li class="active"><a asp-controller="Home" asp-action="Index" >Home</a></li>
+                            <li><a asp-controller="Home" asp-action="About" >About</a></li>
+                            @{
+                                if (ViewContext.RouteData.Values["action"] != null &&
+                                    ViewContext.RouteData.Values["action"].ToString().ToLower() == "index")
+                                {
+                                    <li><a href="#category_section">Categories</a></li>
+                                    <li><a href="#chief_section">Chiefs</a></li>
+                                    <li><a href="#testimonial_section">Testimonials</a></li>
+
+                                }
+                                else {
+                                    <li><a href="\Home\Index\#category_section">Categories</a></li>
+                                    <li><a href="\Home\Index\#chief_section">Chiefs</a></li>
+                                    <li><a href="\Home\Index\#testimonial_section">Testimonials</a></li>
+
+                                
+                                }
+
+                            }
+                            
+                           
+                            
+                            <li><a asp-controller="Home" asp-action="RecipeBlog">Recipes Blog</a></li>
+                            <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            @{
+                               
+                                var roleId = Context.Session.GetInt32("roleId");
+                                if (roleId != null) {
+
+                                    switch (roleId)
+                                    {
+
+                                     case 1:
+                                             <li><a asp-controller="AdminDash" asp-action="Index">Dashboard</a></li>
+
+                                     break;
+                                     case 2:
+                                              <li><a asp-controller="UserDash" asp-action="Index">Dashboard</a></li>
+                                     break;
+                                     case 3:
+                                              <li><a asp-controller="ChiefDash" asp-action="Index">Dashboard</a></li>
+                                      break;
+                                    }
+                                            <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                                   
+                                } 
+                                
+                             
+ 
+                              }
+                             
                         </ul>
                     </nav>
                 </div>
@@ -744,24 +769,40 @@
                     <div class="footer__widget">
                         <h6>WORKING HOURS</h6>
                         <ul>
-                            <li>Monday - Friday: 08:00 am – 08:30 pm</li>
-                            <li>Saturday: 10:00 am – 16:30 pm</li>
-                            <li>Sunday: 10:00 am – 16:30 pm</li>
+                        
+
+                        @{
+
+                            var workingDays=(string?)ViewBag.Home.WorkingDays;
+                            if (workingDays != null) {
+
+                                var arrayOfWorkingDays=workingDays.Split("\n");
+
+                                foreach (var workingDay in arrayOfWorkingDays) {
+
+                                                    <li>@workingDay</li>
+                            
+                                }
+
+                            }
+
+                        }
+                    
+                        
+                       
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="~/home/img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="~/images/@home.HomeLogo" alt=""></a>
                         </div>
-                        <p>Lorem ipsum dolor amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore dolore magna aliqua.</p>
+                        <p>@home.HomeTitle</p>
                         <div class="footer__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="@home.FacbookLink" style="align-content: center;"><i class="fa fa-facebook"></i></a>
+                            <a href="@home.InsLink" style="align-content: center;"><i class="fa fa-instagram"></i></a>
+                            <a href="@home.YoutubeLink" style="align-content: center;"><i class="fa fa-youtube-play"></i></a>
                         </div>
                     </div>
                 </div>
@@ -782,7 +823,7 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
                           <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                       </p>
                   </div>
@@ -815,7 +856,7 @@
 <!-- Js Plugins -->
 <script src="~/home/js/jquery-3.3.1.min.js"></script>
 <script src="~/home/js/bootstrap.min.js"></script>
-<script src="~/home/js/jquery.nice-select.min.js"></script>
+@*<script src="~/home/js/jquery.nice-select.min.js"></script>*@
 <script src="~/home/js/jquery.barfiller.js"></script>
 <script src="~/home/js/jquery.magnific-popup.min.js"></script>
 <script src="~/home/js/jquery.slicknav.js"></script>

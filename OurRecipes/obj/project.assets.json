@@ -43,6 +43,22 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "AutoMapper/13.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "BouncyCastle.Cryptography/2.3.0": {
         "type": "package",
         "compile": {
@@ -2927,6 +2943,18 @@
           "lib/netstandard2.1/Oracle.ManagedDataAccess.dll": {}
         }
       },
+      "Rotativa.AspNetCore/1.3.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Rotativa.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Rotativa.AspNetCore.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
         "runtimeTargets": {
@@ -4888,6 +4916,21 @@
         "aspnetcoreratelimit.5.0.0.nupkg.sha512",
         "aspnetcoreratelimit.nuspec",
         "lib/net6.0/AspNetCoreRateLimit.dll"
+      ]
+    },
+    "AutoMapper/13.0.1": {
+      "sha512": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+      "type": "package",
+      "path": "automapper/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.13.0.1.nupkg.sha512",
+        "automapper.nuspec",
+        "icon.png",
+        "lib/net6.0/AutoMapper.dll",
+        "lib/net6.0/AutoMapper.xml"
       ]
     },
     "BouncyCastle.Cryptography/2.3.0": {
@@ -8606,6 +8649,23 @@
         "oracle.manageddataaccess.core.3.21.90.nupkg.sha512",
         "oracle.manageddataaccess.core.nuspec",
         "readme.txt"
+      ]
+    },
+    "Rotativa.AspNetCore/1.3.2": {
+      "sha512": "bzhSTu7OB9mDpoV+9YP61ABnQl50nXoUOjbkgMmmNnypb5fvuY7S75ANz/fObdA3Z6wBGSKUNzfGQH0zhIRGqg==",
+      "type": "package",
+      "path": "rotativa.aspnetcore/1.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net5.0/Rotativa.AspNetCore.dll",
+        "lib/net6.0/Rotativa.AspNetCore.dll",
+        "lib/net7.0/Rotativa.AspNetCore.dll",
+        "lib/netcoreapp3.1/Rotativa.AspNetCore.dll",
+        "lib/netstandard2.0/Rotativa.AspNetCore.dll",
+        "rotativa.aspnetcore.1.3.2.nupkg.sha512",
+        "rotativa.aspnetcore.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -13056,6 +13116,7 @@
     "net6.0": [
       "AspNetCoreHero.ToastNotification >= 1.1.0",
       "AspNetCoreRateLimit >= 5.0.0",
+      "AutoMapper >= 13.0.1",
       "Microsoft.AspNetCore.Authentication.Google >= 6.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.29",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.5",
@@ -13064,6 +13125,7 @@
       "NToastNotify >= 8.0.0",
       "ODP.NetCore >= 2.0.12",
       "Oracle.EntityFrameworkCore >= 7.21.9",
+      "Rotativa.AspNetCore >= 1.3.2",
       "SendGrid >= 9.29.3",
       "Sieve >= 2.5.5",
       "Swashbuckle.AspNetCore.SwaggerGen >= 6.5.0",
@@ -13117,6 +13179,10 @@
             "target": "Package",
             "version": "[5.0.0, )"
           },
+          "AutoMapper": {
+            "target": "Package",
+            "version": "[13.0.1, )"
+          },
           "Microsoft.AspNetCore.Authentication.Google": {
             "target": "Package",
             "version": "[6.0.0, )"
@@ -13150,6 +13216,10 @@
           "Oracle.EntityFrameworkCore": {
             "target": "Package",
             "version": "[7.21.9, )"
+          },
+          "Rotativa.AspNetCore": {
+            "target": "Package",
+            "version": "[1.3.2, )"
           },
           "SendGrid": {
             "target": "Package",

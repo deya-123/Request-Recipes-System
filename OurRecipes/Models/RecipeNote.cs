@@ -18,4 +18,6 @@ public partial class RecipeNote
     public DateTime? ModifiedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public virtual Recipe? Recipe { get; set; }
 }

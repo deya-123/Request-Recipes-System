@@ -1,0 +1,168 @@
+﻿@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutChief.cshtml";
+}
+
+@model UserProfileViewModel
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Profile Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+
+
+        <form id="editUserForm" class="card" asp-action="EditUserProfile" asp-controller="Users" asp-route-id="@Model.UserId" enctype="multipart/form-data">
+            <input asp-for="UserId" type="text" style="display:none">
+            <div class="card-body">
+                <h3 class="card-title">Edit Profile</h3>
+                <div class="row row-cards">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="UserName">Name</label>
+                            <input asp-for="UserName" type="text" class="form-control" placeholder="Enter Name">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="UserEmail">Email</label>
+                            <input asp-for="UserEmail" type="text" class="form-control" placeholder="Enter Email">
+                            <span asp-validation-for="UserEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="UserPhone">Phone</label>
+                            <input asp-for="UserPhone" type="text" class="form-control" placeholder="Enter Phone">
+                            <span asp-validation-for="UserPhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <label class="form-label" asp-for="UserPassword">Password</label>
+                        <div class="input-group input-group-flat">
+                            <input asp-for="UserPassword" type="password" class="form-control" placeholder="Password" autocomplete="off">
+                            <span class="input-group-text">
+                                <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                                </a>
+                            </span>
+                        </div>
+                        <span asp-validation-for="UserPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <select asp-for="UserGender" class="form-select">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <span asp-validation-for="UserGender" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Country</label>
+                            <select asp-for="UserCountryId" class="form-select">
+                                @foreach (var country in (List<Country>)ViewBag.Countries)
+                                {
+                                    <option value="@country.CountryId">@country.CountryName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="UserCountryId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+
+                            <div class="form-label">User Image</div>
+                            <input asp-for="UserProfileImage" type="file" class="form-control">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    <script>
+
+        //document.addEventListener('DOMContentLoaded', function () {
+        //    $('#editUserForm').submit(function (event) {
+        //        event.preventDefault();
+
+        //        if ($(this).valid()) {
+        //            // Create a new FormData object
+        //            var formData = new FormData();
+
+        //            // Append form fields to FormData
+        //            $(this).find(':input').each(function () {
+        //                var input = $(this);
+        //                formData.append(input.attr('name'), input.val());
+        //            });
+
+        //            // Append image file to FormData
+        //            var imageFile = $('#UserProfileImage')[0].files[0]; // Assuming the file input has id="UserProfileImage"
+        //            formData.append('UserProfileImage', imageFile);
+
+        //            // Send the form data via AJAX
+        //            $.ajax({
+        //                url: $(this).attr('action'),
+        //                type: 'POST',
+        //                data: formData,
+        //                processData: false,  // Don't process the FormData object
+        //                contentType: false,  // Don't set contentType
+        //                success: function (response) {
+        //                    console.log('User updated successfully.');
+        //                },
+        //                error: function (xhr, textStatus, errorThrown) {
+        //                    console.error('Error updating user:', errorThrown);
+        //                }
+        //            });
+        //        }
+        //    });
+        //});
+
+
+
+
+
+
+
+
+    </script>
+}

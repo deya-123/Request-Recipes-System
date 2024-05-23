@@ -1,0 +1,1913 @@
+﻿@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutChief.cshtml";
+}
+
+
+@model CompleteRecipeViewModel
+
+
+@{
+    var chiefId = Context.Session.GetInt32("chiefId") ?? 21;
+}
+
+
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Recipes Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+
+                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Create new Recipe
+                    </a>
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+
+        <div class="card">
+            <div class="row mb-3" style="padding : 16px; align-self: center; ">
+        <div class="col-auto">
+            <label for="startDate" class="form-label">Start Date:</label>
+            <input type="date" id="startDate" class="form-control">
+        </div>
+        <div class="col-auto">
+            <label for="endDate" class="form-label">End Date:</label>
+            <input type="date" id="endDate" class="form-control">
+        </div>
+        <div class="col-auto align-self-end">
+            <button id="searchBtn" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+
+
+
+            <div class="table-responsive" style="padding-left : 20px;padding-right: 20px;    ">
+                <table id="example" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Recipe Name</th>
+                            <th>Category Name</th>
+                            <th>Price</th>
+                            <th>Cooking Time Minutes</th>
+                            <th>Preparing Time Minutes</th>
+                            <th>Servings</th>
+                            <th>Description</th>
+                            <th>Explanation</th>
+                            <th>Status</th>
+                             <th>created date</th>
+                            <th>Ingredients</th>
+                            <th>notes</th>
+                            <th>preparation steps</th>
+                           
+                            <th>Edit</th>
+                            <th>Delete</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Additional rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-delete" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <form id="deleteForm" class="" asp-action="Delete" asp-controller="Recipes" method="post">
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove this Item? What you've done cannot be undone.</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-edit" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="" asp-action="Edit" asp-controller="Recipes" method="post" enctype="multipart/form-data">
+                    
+                    <input asp-for="@Model.RecipeViewModel.RecipeId" type="text" style="display:none">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeName">Recipe Name</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipeName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipePrice">Recipe Price</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipePrice" type="number" min="1" class="form-control" placeholder="Enter Price">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipePrice" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeCookingTimeMinutes">Cooking Time Minutes</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipeCookingTimeMinutes" type="number" class="form-control">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeCookingTimeMinutes" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipePreparingTimeMinutes">Preparing Time Minutes</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipePreparingTimeMinutes" type="number" class="form-control">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipePreparingTimeMinutes" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeServings">Recipe Servings</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipeServings" type="number" class="form-control">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeServings" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeDescription">Recipe Description</label>
+                        <textarea asp-for="@Model.RecipeViewModel.RecipeDescription" type="text" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeDescription" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeExplanation">Recipe Explanation</label>
+                        <textarea asp-for="@Model.RecipeViewModel.RecipeExplanation" type="text" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeExplanation" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+
+                        <div class="form-label">Recipe Main Image</div>
+                        <input asp-for="@Model.RecipeViewModel.RecipeMainImage" type="file" class="form-control">
+
+                    </div>
+                    <div class="mb-3">
+                        <img id='RecipeMainImgPathEdit' alt="Description of your image" width="100%" height="200" style="border-radius: 10px;object-fit: contain;">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Recipe Card Image</div>
+                        <input asp-for="@Model.RecipeViewModel.RecipeCardImage" type="file" class="form-control">
+
+                    </div>
+
+                    <div class="mb-3">
+                        <img id='RecipeCardImgPathEdit' alt="Description of your image" width="100%" height="200" style="border-radius: 10px;object-fit: contain;">
+                    </div>
+                    <div class="mb-3">
+
+                        <div class="form-label">Recipe Video</div>
+                        <input asp-for="@Model.RecipeViewModel.RecipeVideo" type="file" class="form-control">
+
+                    </div>
+                    <div class="mb-3">
+
+                         <iframe id="RecipeVideoPathEdit" width="100%" height="200" style="border-radius: 10px;" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+                      
+                    </div>
+@*
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select asp-for="@Model.RecipeViewModel.RecipeStatus" class="form-select">
+                            <option value=true>Visiable</option>
+                            <option value=false>Not Visiable</option>
+                        </select>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeStatus" class="text-danger"></span>
+                    </div>*@
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Category Type</label>
+                        <select id="categoryTypeSelectEdit" class="form-select" >
+
+                            @foreach (var type in (List<RecipeCategoryType>)ViewBag.RecipeCategoryTypes)
+                            {
+                                <option value="@type.RecipeCategoryTypeId">@type.RecipeCategoryTypeName</option>
+                            }
+
+                        </select>
+                        @*  <span asp-validation-for="CategoryTypeId" class="text-danger"></span>*@
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <select asp-for="@Model.RecipeViewModel.RecipeCategoryId" class="form-select">
+                            @foreach (var category in (List<RecipeCategory>)ViewBag.RecipeCategories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeCategoryId" class="text-danger"></span>
+                    </div>
+                    @*
+                    <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                    </div>
+                    *@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="editForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Recipe</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createForm" class="" asp-action="Create" asp-controller="Recipes" method="post" enctype="multipart/form-data">
+                     <input asp-for="@Model.RecipeViewModel.ChiefId" value="@chiefId" type="text" style="display:none">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeName">Recipe Name</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipeName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipePrice">Recipe Price</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipePrice" type="number" min="1" class="form-control" placeholder="Enter Price">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipePrice" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeCookingTimeMinutes">Cooking Time Minutes</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipeCookingTimeMinutes" type="number" class="form-control">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeCookingTimeMinutes" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipePreparingTimeMinutes">Preparing Time Minutes</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipePreparingTimeMinutes" type="number" class="form-control">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipePreparingTimeMinutes" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeServings">Recipe Servings</label>
+                        <input asp-for="@Model.RecipeViewModel.RecipeServings" type="number" class="form-control">
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeServings" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeDescription">Recipe Description</label>
+                        <textarea asp-for="@Model.RecipeViewModel.RecipeDescription" type="text" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeDescription" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeViewModel.RecipeExplanation">Recipe Explanation</label>
+                        <textarea asp-for="@Model.RecipeViewModel.RecipeExplanation" type="text" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeExplanation" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+
+                        <div class="form-label">Recipe Main Image</div>
+                        <input asp-for="@Model.RecipeViewModel.RecipeMainImage" type="file" class="form-control">
+
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Recipe Card Image</div>
+                        <input asp-for="@Model.RecipeViewModel.RecipeCardImage" type="file" class="form-control">
+
+                    </div>
+                    <div class="mb-3">
+
+                        <div class="form-label">Recipe Video</div>
+                        <input asp-for="@Model.RecipeViewModel.RecipeVideo" type="file" class="form-control">
+
+                    </div>
+@*
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select asp-for="@Model.RecipeViewModel.RecipeStatus" class="form-select">
+                            <option value=true>Visiable</option>
+                            <option value=false>Not Visiable</option>
+                        </select>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeStatus" class="text-danger"></span>
+                    </div>
+*@
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Category Type</label>
+                        <select id="categoryTypeSelect" class="form-select">
+
+                            @foreach (var type in (List<RecipeCategoryType>)ViewBag.RecipeCategoryTypes)
+                            {
+                                <option value="@type.RecipeCategoryTypeId">@type.RecipeCategoryTypeName</option>
+                            }
+
+                        </select>
+                        @*  <span asp-validation-for="CategoryTypeId" class="text-danger"></span>*@
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <select asp-for="@Model.RecipeViewModel.RecipeCategoryId" class="form-select">
+                            @foreach (var category in (List<RecipeCategory>)ViewBag.RecipeCategories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="@Model.RecipeViewModel.RecipeCategoryId" class="text-danger"></span>
+                    </div>
+                    @*
+                    <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                    </div>
+                    *@
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="createForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Recipe
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-ingredient" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <!-- Page pre-title -->
+                            @*  <div class="page-pretitle">
+                            Overview
+                            </div>*@
+                            <h2 class="page-title">
+                                Ingredients
+                            </h2>
+                        </div>
+                        <!-- Page title actions -->
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                @*  <span class="d-none d-sm-inline">
+                                <a href="#" class="btn">
+                                New view
+                                </a>
+                                </span>*@
+
+                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-ingredient">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Create new Ingredient
+                                </a>
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive" style="padding : 20px; ">
+                    <table id="ingredients-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                        <thead>
+                            <tr>
+
+
+                                <th>Id</th>
+                                <th>Ingredient Quantity</th>
+                                <th>Ingredient Unit</th>
+                                <th>Ingredient Name</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- Additional rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                @*    <button type="submit" form="editForm" class="btn btn-primary ms-auto">
+                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                Edit
+                </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-create-ingredient" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Ingredient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createIngredientForm" class="" asp-action="Create" asp-controller="Ingredients" method="post" >
+
+                    <input id="tttt" asp-for="@Model.IngredientViewModel.RecipeId" type="text" style="display:none">
+
+                           <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientQuantity">Ingredient Quantity</label>
+                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" min="1" class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.IngredientViewModel.IngredientQuantity" class="text-danger"></span>
+                    </div>
+                          <div class="mb-3">
+                        <label class="form-label">Ingredient Unit</label>
+                        <select asp-for="@Model.IngredientViewModel.IngredientUnitId" class="form-select">
+
+                            @foreach (var type in (List<IngredientUnit>)ViewBag.IngredientUnits)
+                            {
+                                <option value="@type.IngredientUnitId">@type.IngredientUnitName</option>
+                            }
+
+                        </select>
+                        @*  <span asp-validation-for="CategoryTypeId" class="text-danger"></span>*@
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientCustomName">Ingredient Name</label>
+                        <input asp-for="@Model.IngredientViewModel.IngredientCustomName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="@Model.IngredientViewModel.IngredientCustomName" class="text-danger"></span>
+                    </div>
+             
+                
+              
+                 
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-target="#modal-ingredient" data-bs-toggle="modal" data-bs-dismiss="modal">
+                    back
+                </a>
+                <button type="submit" form="createIngredientForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Ingredient
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-edit-ingredient" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Ingredient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="editIngredientForm" class="" asp-action="Edit" asp-controller="Ingredients" method="post">
+
+                    <input  asp-for="@Model.IngredientViewModel.IngredientId" type="text" style="display:none">
+
+                           <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientQuantity">Ingredient Quantity</label>
+                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" min="1" class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.IngredientViewModel.IngredientQuantity" class="text-danger"></span>
+                    </div>
+                          <div class="mb-3">
+                        <label class="form-label">Ingredient Unit</label>
+                        <select asp-for="@Model.IngredientViewModel.IngredientUnitId" class="form-select">
+
+                            @foreach (var type in (List<IngredientUnit>)ViewBag.IngredientUnits)
+                            {
+                                <option value="@type.IngredientUnitId">@type.IngredientUnitName</option>
+                            }
+
+                        </select>
+                        @*  <span asp-validation-for="CategoryTypeId" class="text-danger"></span>*@
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientCustomName">Ingredient Name</label>
+                        <input asp-for="@Model.IngredientViewModel.IngredientCustomName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="@Model.IngredientViewModel.IngredientCustomName" class="text-danger"></span>
+                    </div>
+             
+                
+              
+                 
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="editIngredientForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                  Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-delete-ingredient" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <form id="deleteIngredientForm" class="" asp-action="Delete" asp-controller="Ingredient" method="post">
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove this Item? What you've done cannot be undone.</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteIngredientForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--   **************************************************  Steps ********************************************       -->
+
+<div class="modal modal-blur fade" id="modal-steps" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <!-- Page pre-title -->
+                            @*  <div class="page-pretitle">
+                            Overview
+                            </div>*@
+                            <h2 class="page-title">
+                                Steps
+                            </h2>
+                        </div>
+                        <!-- Page title actions -->
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                @*  <span class="d-none d-sm-inline">
+                                <a href="#" class="btn">
+                                New view
+                                </a>
+                                </span>*@
+
+                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-steps">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Create new Step
+                                </a>
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive" style="padding : 20px; ">
+                    <table id="step-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                        <thead>
+                            <tr>
+
+
+                                <th>Id</th>
+                                <th>Preparation Step Description</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- Additional rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                @*    <button type="submit" form="editForm" class="btn btn-primary ms-auto">
+                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                Edit
+                </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-create-steps" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Step</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createStepForm" class="" asp-action="Create" asp-controller="RecipePreparationSteps" method="post">
+
+                    <input id="recipeIdStep" asp-for="@Model.RecipePreparationStepViewModel.RecipeId" type="text" style="display:none">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription">Preparation Step Description</label>
+                        <input asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" type="text" class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" class="text-danger"></span>
+                    </div>
+                 
+
+
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-target="#modal-steps" data-bs-toggle="modal" data-bs-dismiss="modal">
+                    back
+                </a>
+                <button type="submit" form="createStepForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Step
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-edit-steps" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Steps</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+          <form id="editStepForm" class="" asp-action="Edit" asp-controller="RecipePreparationSteps" method="post">
+
+                    <input asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepId" type="text" style="display:none">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription">Preparation Step Description</label>
+                        <input asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" type="text" class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" class="text-danger"></span>
+                    </div>
+                 
+
+
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="editStepForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-delete-steps" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <form id="deleteStepForm" class="" asp-action="Delete" asp-controller="RecipePreparationSteps" method="post">
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove this Item? What you've done cannot be undone.</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteStepForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--   **************************************************  Notes ********************************************       -->
+
+<div class="modal modal-blur fade" id="modal-note" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <!-- Page pre-title -->
+                            @*  <div class="page-pretitle">
+                            Overview
+                            </div>*@
+                            <h2 class="page-title">
+                                Notes
+                            </h2>
+                        </div>
+                        <!-- Page title actions -->
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                @*  <span class="d-none d-sm-inline">
+                                <a href="#" class="btn">
+                                New view
+                                </a>
+                                </span>*@
+
+                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-note">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Create new Note
+                                </a>
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive" style="padding : 20px; ">
+                    <table id="note-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                        <thead>
+                            <tr>
+                                
+
+
+
+                                <th>Id</th>
+                                <th>Note Description</th>
+                                <th>RecipeNote Title</th>
+                       
+                                <th>Edit</th>
+                                <th>Delete</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- Additional rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                @*    <button type="submit" form="editForm" class="btn btn-primary ms-auto">
+                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                Edit
+                </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-create-note" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Note</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createNoteForm" class="" asp-action="Create" asp-controller="RecipeNotes" method="post">
+
+                    <input id="recipeIdNote" asp-for="@Model.RecipeNotesViewModel.RecipeId" type="text" style="display:none">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeNotesViewModel.RecipeNoteTitle">Note Title</label>
+                        <input asp-for="@Model.RecipeNotesViewModel.RecipeNoteTitle" type="text"  class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.RecipeNotesViewModel.RecipeNoteTitle" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription">Note Description</label>
+                        <input asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" type="text"  class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" class="text-danger"></span>
+                    </div>
+                    
+                  
+
+
+
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-target="#modal-note" data-bs-toggle="modal" data-bs-dismiss="modal">
+                    back
+                </a>
+                <button type="submit" form="createNoteForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Note
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-edit-note" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Ingredient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+             
+                <form id="editNoteForm" class="" asp-action="Edit" asp-controller="RecipeNotes" method="post">
+
+                    <input  asp-for="@Model.RecipeNotesViewModel.RecipeNoteId" type="text" style="display:none">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeNotesViewModel.RecipeNoteTitle">Note Title</label>
+                        <input asp-for="@Model.RecipeNotesViewModel.RecipeNoteTitle" type="text"  class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.RecipeNotesViewModel.RecipeNoteTitle" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription">Note Description</label>
+                        <input asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" type="text"  class="form-control" placeholder="">
+                        <span asp-validation-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" class="text-danger"></span>
+                    </div>
+                    
+                  
+
+
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="editNoteForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-delete-note" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <form id="deleteNoteForm" class="" asp-action="Delete" asp-controller="RecipeNotes" method="post">
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove this Item? What you've done cannot be undone.</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteNoteForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    <script>
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+          
+
+          var recipeIdNow = 1;
+          var table = $('#example').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                  "ajax": {
+                        "url":'@Url.Action("LoadDataByChiefId", "Recipes")',
+                    "type": "GET",
+                    "data": function (d) {
+                        d.id = @chiefId
+                    }
+                }, 
+            
+                "columns": [
+                    { "data": "recipeId" },
+                    { "data": "recipeName" },
+                    { "data": "categoryName" },
+                    { "data": "recipePrice" },
+                    { "data": "recipeCookingTimeMinutes" },
+                    { "data": "recipePreparingTimeMinutes" },
+                    { "data": "recipeServings" },
+                    { "data": "recipeDescription" },
+                    { "data": "recipeExplanation" },
+                    { "data": "recipeStatus" },
+                     { "data": "createdAt" },
+                    {
+                        "data": null, // Edit column
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-ingredient\" class=\"btn btn-info \">Ingredients</button>",
+                        "orderable": false
+                    }, {
+                        "data": null, // Edit column
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-note\" class=\"btn btn-info \">Notes</button>",
+                        "orderable": false
+                    }, {
+                        "data": null, // Edit column
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-steps\" class=\"btn btn-info \">Steps</button>",
+                        "orderable": false
+                    },
+                    {
+                        "data": null, // Edit column
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit\" class=\"btn btn-primary \">Edit</button>",
+                        "orderable": false
+                    },
+                    {
+                        "data": null, // Delete column
+                        "defaultContent": "<button data-bs-target=\"#modal-delete\" data-bs-toggle=\"modal\" class=\"btn btn-danger \">Delete</button>",
+                        "orderable": false
+                    }
+                ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                    "paginate": {
+                        "first": '<<',  // Change as per need
+                        "last": '>>',  // Change as per need
+                        "next": '>',  // Change as per need
+                        "previous": '<'  // Change as per need
+                    }
+                },
+
+
+            });
+          $('#example tbody').on('click', 'button', function () {
+            var action = this.textContent.trim();
+            var rowData = table.row($(this).parents('tr')).data();
+            var recipeId = rowData['recipeId'];
+
+            recipeIdNow = recipeId;
+            if (action === 'Ingredients') {
+                document.getElementById("tttt").value=recipeIdNow;
+                ingredientsTable.ajax.reload();
+            }
+            else if (action === 'Steps') {
+                document.getElementById("recipeIdStep").value=recipeIdNow;
+                stepsTable.ajax.reload();
+            }
+
+              else  if (action === 'Notes') {
+                document.getElementById("recipeIdNote").value = recipeIdNow;
+                notesTable.ajax.reload();
+                }
+
+
+            if (action === 'Edit') {
+                $.ajax({
+                    url: '@Url.Action("GetRecipeById", "Recipes")',
+                    type: 'GET',
+                    data: { id: recipeId },
+                    success: function (data) {
+
+
+                        var edit = document.getElementById("editForm");
+                        edit.RecipeViewModel_RecipeName.value = data.recipeName;
+
+                        //edit.RecipeViewModel_RecipeStatus.value = data.recipeStatus;
+                        edit.RecipeViewModel_RecipePrice.value = data.recipePrice;
+                        edit.RecipeViewModel_RecipeCookingTimeMinutes.value = data.recipeCookingTimeMinutes;
+                        edit.RecipeViewModel_RecipePreparingTimeMinutes.value = data.recipePreparingTimeMinutes;
+                        edit.RecipeViewModel_RecipeDescription.value = data.recipeDescription;
+                        edit.RecipeViewModel_RecipeExplanation.value = data.recipeExplanation;
+                        edit.RecipeViewModel_RecipeId.value = data.recipeId;
+                        edit.RecipeViewModel_RecipeCategoryId.value = data.categoryId;
+                        edit.RecipeViewModel_RecipeServings.value = data.recipeServings;
+
+                         document.getElementById("RecipeCardImgPathEdit").src = '/recipesImage/' + data.recipeCardImgPath;
+                         document.getElementById("RecipeVideoPathEdit").src = '/recipesVideos/' + data.recipeVideoPath;
+                         document.getElementById("RecipeMainImgPathEdit").src = '/recipesImage/' + data.recipeMainImgPath;
+                        edit.action = "@Url.Action("Edit", "Recipes")/" + recipeId;
+                        // Populate other fields...
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error fetching user data:', errorThrown);
+                    }
+                });
+            } 
+            else if (action === 'Delete') {
+                // Handle delete action
+                {
+                    var deleteForm = document.querySelector('#deleteForm');
+                    if (deleteForm) {
+                        deleteForm.action = "@Url.Action("Delete", "Recipes")/" + recipeId;
+                    }
+                }
+            }
+        });
+          $('#createForm').submit(function (event) {
+            event.preventDefault();
+
+            if ($(this).valid()) {
+                var create = document.getElementById("createForm");
+                var formData = new FormData();
+                var currentPage = $('.datatable').DataTable().page();
+                // Append form fields to FormData
+                $(this).find(':input').each(function () {
+                    var input = $(this);
+                    
+                     if(input.attr('name')!=='RecipeViewModel.RecipeMainImage' || input.attr('name')!=='RecipeViewModel.RecipeCardImage' || input.attr('name')!=='RecipeViewModel.RecipeVideo')
+                    formData.append(input.attr('name'), input.val());
+               
+                });
+
+                try{
+                
+                // Append image file to FormData
+                var mainImageFile = create.RecipeViewModel_RecipeMainImage.files[0];
+                var cardImageFile = create.RecipeViewModel_RecipeCardImage.files[0];
+                var videoFile = create.RecipeViewModel_RecipeVideo.files[0];
+                formData.append('RecipeViewModel.RecipeMainImage', mainImageFile);
+                formData.append('RecipeViewModel.RecipeCardImage', cardImageFile);
+                formData.append('RecipeViewModel.RecipeVideo', videoFile);
+                // Send the form data via AJAX
+                
+                }
+                catch(e){
+                
+                }
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,  // Don't process the FormData object
+                    contentType: false,  // Don't set contentType
+                    success: function (response) {
+
+                       table.ajax.reload(function () {
+                            // Restore the current page index
+                            table.page(currentPage).draw(false);
+                        });
+
+                        console.log('User updated successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error updating user:', errorThrown);
+                    }
+                });
+            }
+        });
+          $('#deleteForm').submit(function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+
+                // Make an AJAX request to submit the form data
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        table.ajax.reload();
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+            }
+        }); 
+          
+          var ingredientsTable = $('#ingredients-table').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                "ajax": {
+                    "url": '@Url.Action("LoadDataByRecipeId", "Ingredients")',
+                    "type": "GET",
+                    "data": function (d) {
+                        d.recipeId = recipeIdNow;
+                    }
+                }, 
+      
+               
+                     "columns": [
+                { "data": "ingredientId" },
+                { "data": "ingredientQuantity" },
+                { "data": "ingredientUnitName" },
+                { "data": "ingredientCustomName" },
+
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit-ingredient\" class=\"btn btn-info \">Edit</button>",
+                    "orderable": false
+                },
+                {
+                    "data": null, // Delete column
+                        "defaultContent": "<button data-bs-target=\"#modal-delete-ingredient\" data-bs-toggle=\"modal\" class=\"btn btn-danger \">Delete</button>",
+                    "orderable": false
+                }
+            ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                "paginate": {
+                    "first": '<<',  // Change as per need
+                    "last": '>>',  // Change as per need
+                    "next": '>',  // Change as per need
+                    "previous": '<'  // Change as per need
+                }
+            },
+
+
+                    });
+          $('#ingredients-table tbody').on('click', 'button', function () {
+            var action = this.textContent.trim();
+            var rowData = ingredientsTable.row($(this).parents('tr')).data();
+            var ingredientId = rowData['ingredientId'];
+
+           
+            if (action === 'Ingredients') {
+                document.getElementById("tttt").value=recipeIdNow;
+                ingredientsTable.ajax.reload();
+            }
+
+            if (action === 'Edit') {
+                $.ajax({
+                    url: '@Url.Action("GetIngredientById", "Ingredients")',
+                    type: 'GET',
+                    data: { id: ingredientId },
+                    success: function (data) {
+
+
+                            var edit = document.getElementById("editIngredientForm");
+                   
+
+                        edit.IngredientViewModel_IngredientId.value = data.ingredientId;
+                        edit.IngredientViewModel_IngredientQuantity.value = data.ingredientQuantity;
+                        edit.IngredientViewModel_IngredientUnitId.value = data.ingredientUnitId;
+                        edit.IngredientViewModel_IngredientCustomName.value = data.ingredientCustomName;
+                     
+                   
+                         edit.action = "@Url.Action("Edit", "Ingredients")/" + ingredientId;
+                        // Populate other fields...
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error fetching user data:', errorThrown);
+                    }
+                });
+            } else if (action === 'Delete') {
+                // Handle delete action
+                {
+                    var deleteForm = document.querySelector('#deleteIngredientForm');
+                    if (deleteForm) {
+                        deleteForm.action = "@Url.Action("Delete", "Ingredients")/" + ingredientId;
+                    }
+                }
+            }
+        });
+          $('#createIngredientForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                 if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+             
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        // $('.datatable').DataTable().ajax.reload();
+
+                     
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+          $('#deleteIngredientForm').submit(function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+
+                // Make an AJAX request to submit the form data
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        ingredientsTable.ajax.reload();
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+            }
+        });
+          $('#editIngredientForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                 if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+             
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        // $('.datatable').DataTable().ajax.reload();
+
+                     
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+
+
+          var stepsTable =  $('#step-table').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                "ajax": {
+                    "url": '@Url.Action("LoadDataByRecipeId", "RecipePreparationSteps")',
+                    "type": "GET",
+                    "data": function (d) {
+                        d.recipeId = recipeIdNow;
+                    }
+                }, 
+      
+
+
+                     "columns": [
+                { "data": "recipePreparationStepId" },
+                { "data": "recipePreparationStepDescription" },
+ 
+
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit-steps\" class=\"btn btn-info \">Edit</button>",
+                    "orderable": false
+                },
+                {
+                    "data": null, // Delete column
+                        "defaultContent": "<button data-bs-target=\"#modal-delete-steps\" data-bs-toggle=\"modal\" class=\"btn btn-danger \">Delete</button>",
+                    "orderable": false
+                }
+            ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                "paginate": {
+                    "first": '<<',  // Change as per need
+                    "last": '>>',  // Change as per need
+                    "next": '>',  // Change as per need
+                    "previous": '<'  // Change as per need
+                }
+            },
+
+
+                    });
+          $('#step-table tbody').on('click', 'button', function () {
+            var action = this.textContent.trim();
+            var rowData = stepsTable.row($(this).parents('tr')).data();
+            var recipePreparationStepId = rowData['recipePreparationStepId'];
+
+           
+      
+
+            if (action === 'Edit') {
+                $.ajax({
+                    url: '@Url.Action("GetStepById", "RecipePreparationSteps")',
+                    type: 'GET',
+                    data: { id: recipePreparationStepId },
+                    success: function (data) {
+
+
+                            var edit = document.getElementById("editStepForm");
+                
+
+                        edit.RecipePreparationStepViewModel_RecipePreparationStepId.value = data.recipePreparationStepId;
+                        edit.RecipePreparationStepViewModel_RecipePreparationStepDescription.value = data.recipePreparationStepDescription;
+                    
+                     
+                   
+                         edit.action = "@Url.Action("Edit", "RecipePreparationSteps")/" + recipePreparationStepId;
+                        // Populate other fields...
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error fetching user data:', errorThrown);
+                    }
+                });
+            } else if (action === 'Delete') {
+                // Handle delete action
+                {
+                    var deleteForm = document.querySelector('#deleteStepForm');
+                    if (deleteForm) {
+                        deleteForm.action = "@Url.Action("Delete", "RecipePreparationSteps")/" + recipePreparationStepId;
+                    }
+                }
+            }
+        });
+          $('#createStepForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                 if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+             
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        // $('.datatable').DataTable().ajax.reload();
+
+                     
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+          $('#deleteStepForm').submit(function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+
+                // Make an AJAX request to submit the form data
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        ingredientsTable.ajax.reload();
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+            }
+        });
+
+          $('#editStepForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                 if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+             
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        // $('.datatable').DataTable().ajax.reload();
+
+                     
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+
+
+
+
+          var notesTable =  $('#note-table').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                "ajax": {
+                        "url": '@Url.Action("LoadDataByRecipeId", "RecipeNotes")',
+                    "type": "GET",
+                    "data": function (d) {
+                        d.recipeId = recipeIdNow;
+                    }
+                }, 
+      
+               
+                "columns": [
+                      { "data": "recipeNoteId" },
+                { "data": "recipeNoteTitle" },
+                { "data": "recipeNoteDescription" },
+              
+           
+
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit-note\" class=\"btn btn-info \">Edit</button>",
+                    "orderable": false
+                },
+                {
+                    "data": null, // Delete column
+                        "defaultContent": "<button data-bs-target=\"#modal-delete-note\" data-bs-toggle=\"modal\" class=\"btn btn-danger \">Delete</button>",
+                    "orderable": false
+                }
+            ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                "paginate": {
+                    "first": '<<',  // Change as per need
+                    "last": '>>',  // Change as per need
+                    "next": '>',  // Change as per need
+                    "previous": '<'  // Change as per need
+                }
+            },
+
+
+                    });
+
+          $('#note-table tbody').on('click', 'button', function () {
+            var action = this.textContent.trim();
+            var rowData = notesTable.row($(this).parents('tr')).data();
+            var recipeNoteId = rowData['recipeNoteId'];
+
+ 
+
+         
+
+            if (action === 'Edit') {
+                $.ajax({
+                    url: '@Url.Action("GetRecipeNoteById", "RecipeNotes")',
+                    type: 'GET',
+                    data: { id: recipeNoteId },
+                    success: function (data) {
+
+
+                            var edit = document.getElementById("editNoteForm");
+                   
+
+                        edit.RecipeNotesViewModel_RecipeNoteTitle.value = data.recipeNoteTitle;
+                        edit.RecipeNotesViewModel_RecipeNoteDescription.value = data.recipeNoteDescription;
+                            edit.RecipeNotesViewModel_RecipeNoteId.value = data.recipeNoteId;
+                     
+                   
+                         edit.action = "@Url.Action("Edit", "RecipeNotes")/" + recipeNoteId;
+                        // Populate other fields...
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error fetching user data:', errorThrown);
+                    }
+                });
+            }
+            else if (action === 'Delete') {
+                // Handle delete action
+                {
+                    var deleteForm = document.querySelector('#deleteNoteForm');
+                    if (deleteForm) {
+                        deleteForm.action = "@Url.Action("Delete", "RecipeNotes")/" + recipeNoteId;
+                    }
+                }
+            }
+        });
+          $('#createNoteForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                 if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+             
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        // $('.datatable').DataTable().ajax.reload();
+
+                     
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+          $('#deleteNoteForm').submit(function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+
+                // Make an AJAX request to submit the form data
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        ingredientsTable.ajax.reload();
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+            }
+        });
+          $('#editNoteForm').submit(function (event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                 if ($(this).valid()) {
+                // Serialize the form data
+                var formData = $(this).serialize();
+             
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response if needed
+                        // $('.datatable').DataTable().ajax.reload();
+
+                     
+                        console.log('User created successfully.');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response if needed
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+            $('#searchBtn').on('click', function () {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+
+                // Send AJAX request to the backend
+                $.ajax({
+                    url: '@Url.Action("SearchByDateAndChiefId", "Recipes")', // Change the URL to your backend endpoint
+                    type: 'GET',
+                    data: { minDate: startDate, maxDate: endDate,chiefId:@chiefId },
+                    success: function (response) {
+                        // Update DataTable with new data
+                        table.clear().rows.add(response.data).draw();
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.error(error);
+                    }
+                });
+            });
+
+       
+   
+     
+
+             $('#categoryTypeSelect').change(function () {
+
+
+                var typeId = $(this).val();
+                $.ajax({
+                    url: '/RecipeCategories/GetCateogryByTypeId',
+                    type: 'GET',
+                    data: { id: typeId },
+                    success: function (data) {
+
+
+                        $('#createForm #RecipeViewModel_RecipeCategoryId').empty();
+                        $.each(data, function (index, item) {
+                            $('#createForm #RecipeViewModel_RecipeCategoryId').append($('<option>').text(item.categoryName).attr('value', item.categoryId));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+      
+              $('#categoryTypeSelectEdit').change(function () {
+
+
+                var typeId = $(this).val();
+                $.ajax({
+                    url: '/RecipeCategories/GetCateogryByTypeId',
+                    type: 'GET',
+                    data: { id: typeId },
+                    success: function (data) {
+
+
+                        $('#editForm #RecipeViewModel_RecipeCategoryId').empty();
+                        $.each(data, function (index, item) {
+                            $('#editForm #RecipeViewModel_RecipeCategoryId').append($('<option>').text(item.categoryName).attr('value', item.categoryId));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+       
+        //$('#editForm').submit(function (event) {
+        //    // Prevent the default form submission behavior
+        //    event.preventDefault();
+        //    if ($(this).valid()) {
+        //        // Serialize the form data
+        //        var formData = $(this).serialize();
+        //          var create = document.getElementById("editForm");
+        //         var mainImageFile =  create.RecipeMainImage.files[0];
+        //        var cardImageFile = create.RecipeCardImage.files[0];
+        //        var videoFile = create.RecipeVideo.files[0];
+        //        formData.append('RecipeMainImage', mainImageFile);
+        //        formData.append('RecipeCardImage', cardImageFile);
+        //        formData.append('RecipeVideo', videoFile);
+
+        //        // Make an AJAX request to submit the form data
+        //        $.ajax({
+        //            url: $(this).attr('action'),
+        //            type: 'POST',
+        //            data: formData,
+        //            success: function (response) {
+        //                // Handle the success response if needed
+        //                $('.datatable').DataTable().ajax.reload();
+        //                console.log('User created successfully.');
+        //            },
+        //            error: function (xhr, textStatus, errorThrown) {
+        //                // Handle the error response if needed
+        //                console.error('Error creating user:', errorThrown);
+        //            }
+        //        });
+        //    }
+        //});
+    
+      
+     
+
+                });
+
+
+
+
+
+
+
+
+    </script>
+}
+
+
+    <style>
+        .dataTables_wrapper .dataTable .btn {
+            height: auto;
+            // Adjust button heights padding: 0.375rem 0.75rem;
+            // Bootstrap 4 padding style
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 1.2em 0.4em;
+            // Increase padding around buttons color: #007bff;
+            // Change the text color background-color: #ffffff;
+            // Change background color border: 1px solid #ddd;
+            // Add border margin-right: 5px;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                color: #fff;
+                // Change text color for active/hover background-color: #007bff;
+                // Change background color for active/hover border-color: #007bff;
+                // Change border color for active/hover
+            }
+
+        div.dataTables_wrapper div.dataTables_info {
+            padding-top: 1.85em;
+        }
+
+        .dataTables_filter input {
+            height: 36px; /* Increase input height */
+            padding: 6px 12px; /* Adjust padding for better visual appearance */
+            font-size: 14px; /* Optional: Increase font size if needed */
+        }
+    </style>

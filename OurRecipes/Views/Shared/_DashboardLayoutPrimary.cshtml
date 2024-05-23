@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@await Component.InvokeAsync("NToastNotify")
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
@@ -6,13 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- CSS files -->
-    <link href="/dash/dist/css/tabler.min.css?1684106062" rel="stylesheet"/>
-    <link href="/dash/dist/css/tabler-flags.min.css?1684106062" rel="stylesheet"/>
-    <link href="/dash/dist/css/tabler-payments.min.css?1684106062" rel="stylesheet"/>
-    <link href="/dash/dist/css/tabler-vendors.min.css?1684106062" rel="stylesheet"/>
-    <link href="/dash/dist/css/demo.min.css?1684106062" rel="stylesheet"/>
+    <link href="/dash/dist/libs/plyr/dist/plyr.css?1684106062" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="~/dash/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="~/dash/dist/css/tabler-flags.min.css" rel="stylesheet"/>
+    <link href="~/dash/dist/css/tabler-payments.min.css" rel="stylesheet"/>
+    <link href="~/dash/dist/css/tabler-vendors.min.css" rel="stylesheet"/>
+    <link href="~/dash/dist/css/demo.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
     <style>
+        /* Custom CSS code */
+        .position-bottom-center {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            z-index: 100000; 
+            transform: translateX(-50%);
+        }
+    </style>
+    <style>
+        
 
       :root {
           --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
@@ -24,22 +39,78 @@
   </head>
   <body >
     <script src="/dash/dist/js/demo-theme.min.js?1684106062"></script>
-   
-        @RenderBody()
-  
+ 
+    @RenderBody()
 
+    <div id="successToast" class="toast position-bottom-center" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" data-bs-autohide="false" data-bs-toggle="toast">
+        <div class="toast-header bg-success text-light">
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            
+        </div>
+    </div>
+    <div id="dangerToast" class="toast position-bottom-center" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" data-bs-autohide="false" data-bs-toggle="toast">
+        <div class="toast-header bg-danger text-light">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          
+        </div>
+    </div>
     <!-- Libs JS -->
-    <script src="/dash/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer></script>
-    <script src="/dash/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1684106062" defer></script>
-    <script src="/dash/dist/libs/jsvectormap/dist/maps/world.js?1684106062" defer></script>
-    <script src="/dash/dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062" defer></script>
+    <script src="~/home/js/jquery-3.3.1.min.js"></script>
+    <script src="~/dash/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer></script>
+    <script src="~/dash/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1684106062" defer></script>
+    <script src="~/dash/dist/libs/jsvectormap/dist/maps/world.js?1684106062" defer></script>
+    <script src="~/dash/dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062" defer></script>
     <!-- Tabler Core -->
-    <script src="/dash/dist/js/tabler.min.js?1684106062" defer></script>
-    <script src="/dash/dist/js/demo.min.js?1684106062" defer></script>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="~/dash/dist/js/tabler.min.js?1684106062" defer></script>
+    <script src="~/dash/dist/js/demo.min.js?1684106062" defer></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.1.1/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="~/dash/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer=""></script>
+    <script src="~/dash/dist/libs/plyr/dist/plyr.min.js?1684106062" defer=""></script>
+    <script>
+        function showSuccessToast(message) {
+            var successToast = document.getElementById('successToast');
+            successToast.querySelector('.toast-body').innerText = message;
+            var toast = new bootstrap.Toast(successToast);
+            toast.show();
+            setTimeout(function () {
+                toast.hide();
+            }, 1000);
+        }
+        function hideDangerToast() {
+            var toast = new bootstrap.Toast(document.getElementById('dangerToast'));
+            toast.hide();
+        }
+        function hideSuccessToast() {
+            var toast = new bootstrap.Toast(document.getElementById('successToast'));
+            toast.hide();
+        }
+        // Show danger toast with custom message
+        function showDangerToast(message) {
+            var dangerToast = document.getElementById('dangerToast');
+            dangerToast.querySelector('.toast-body').innerText = message;
+            var toast = new bootstrap.Toast(dangerToast);
+            toast.show();
+            setTimeout(function () {
+                toast.hide();
+            }, 1000);
+        }
+    </script>
 
+
+   @* <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+   
+ aaasfasfsfsfaweafweafewafewafewafwejifiojewfjaweofijiowaefj
+*@
   </body>
 </html>
