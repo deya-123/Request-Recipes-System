@@ -1129,3 +1129,9 @@ C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\obj\Debug\
 C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
 C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\AutoMapper.dll
 C:\Users\user\Source\Repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Rotativa.AspNetCore.dll
+C:\Users\user\source\repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\user\source\repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\user\source\repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.Owin.dll
+C:\Users\user\source\repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\user\source\repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Microsoft.Owin.Security.dll
+C:\Users\user\source\repos\deya-123\Request-Recipes-System\OurRecipes\bin\Debug\net6.0\Owin.dll

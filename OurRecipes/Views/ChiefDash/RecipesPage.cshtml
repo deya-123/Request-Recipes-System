@@ -492,7 +492,7 @@
 
                            <div class="mb-3">
                         <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientQuantity">Ingredient Quantity</label>
-                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" min="1" class="form-control" placeholder="">
+                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" class="form-control" placeholder="">
                         <span asp-validation-for="@Model.IngredientViewModel.IngredientQuantity" class="text-danger"></span>
                     </div>
                           <div class="mb-3">
@@ -552,7 +552,7 @@
 
                            <div class="mb-3">
                         <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientQuantity">Ingredient Quantity</label>
-                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" min="1" class="form-control" placeholder="">
+                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text"  class="form-control" placeholder="">
                         <span asp-validation-for="@Model.IngredientViewModel.IngredientQuantity" class="text-danger"></span>
                     </div>
                           <div class="mb-3">
@@ -630,8 +630,8 @@
 
 <!--   **************************************************  Steps ********************************************       -->
 
-<div class="modal modal-blur fade" id="modal-steps" tabindex="-1" style="display: none;" aria-modal="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal modal-blur" id="modal-steps" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -726,7 +726,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription">Preparation Step Description</label>
-                        <input asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" type="text" class="form-control" placeholder="">
+                        <textarea asp-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" type="text" class="form-control" placeholder=""></textarea>
                         <span asp-validation-for="@Model.RecipePreparationStepViewModel.RecipePreparationStepDescription" class="text-danger"></span>
                     </div>
                  
@@ -829,8 +829,8 @@
 
 <!--   **************************************************  Notes ********************************************       -->
 
-<div class="modal modal-blur fade" id="modal-note" tabindex="-1" style="display: none;" aria-modal="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal modal-blur" id="modal-note" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -933,7 +933,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription">Note Description</label>
-                        <input asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" type="text"  class="form-control" placeholder="">
+                        <textarea asp-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" type="text"  class="form-control" placeholder=""></textarea>
                         <span asp-validation-for="@Model.RecipeNotesViewModel.RecipeNoteDescription" class="text-danger"></span>
                     </div>
                     
@@ -1079,8 +1079,20 @@
                     { "data": "recipeCookingTimeMinutes" },
                     { "data": "recipePreparingTimeMinutes" },
                     { "data": "recipeServings" },
-                    { "data": "recipeDescription" },
-                    { "data": "recipeExplanation" },
+                    {
+                        "data": "recipeDescription",
+                        "render": function (data, type, full, meta) {
+                            // Display only the first 100 characters followed by "..." if the text exceeds that length
+                            return data.length > 10 ? data.substr(0, 10) + "..." : data;
+                        }
+                    },
+                    {
+                        "data": "recipeExplanation",
+                        "render": function (data, type, full, meta) {
+                            // Display only the first 100 characters followed by "..." if the text exceeds that length
+                            return data.length > 10 ? data.substr(0, 10) + "..." : data;
+                        }
+                    },
                     { "data": "recipeStatus" },
                      { "data": "createdAt" },
                     {
@@ -1225,7 +1237,7 @@
                             // Restore the current page index
                             table.page(currentPage).draw(false);
                         });
-
+                          showSuccessToast('created successfully.')
                         console.log('User updated successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1249,6 +1261,8 @@
                     success: function (response) {
                         // Handle the success response if needed
                         table.ajax.reload();
+
+                         showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1363,7 +1377,7 @@
                         // Handle the success response if needed
                         // $('.datatable').DataTable().ajax.reload();
 
-                     
+                            showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1388,6 +1402,7 @@
                     success: function (response) {
                         // Handle the success response if needed
                         ingredientsTable.ajax.reload();
+                          showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1411,7 +1426,7 @@
                     success: function (response) {
                         // Handle the success response if needed
                         // $('.datatable').DataTable().ajax.reload();
-
+                            showSuccessToast('successfully.')
                      
                         console.log('User created successfully.');
                     },
@@ -1524,7 +1539,7 @@
                         // Handle the success response if needed
                         // $('.datatable').DataTable().ajax.reload();
 
-                     
+                       showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1549,6 +1564,7 @@
                     success: function (response) {
                         // Handle the success response if needed
                         ingredientsTable.ajax.reload();
+                          showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1574,7 +1590,7 @@
                         // Handle the success response if needed
                         // $('.datatable').DataTable().ajax.reload();
 
-                     
+                       showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -1691,7 +1707,7 @@
                     success: function (response) {
                         // Handle the success response if needed
                         // $('.datatable').DataTable().ajax.reload();
-
+                          showSuccessToast('successfully.')
                      
                         console.log('User created successfully.');
                     },
@@ -1717,6 +1733,7 @@
                     success: function (response) {
                         // Handle the success response if needed
                         ingredientsTable.ajax.reload();
+                            showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {

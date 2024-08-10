@@ -1,0 +1,129 @@
+﻿
+
+@{
+Layout=null;
+}
+
+@model Order
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #dddddd;
+        }
+
+        .header {
+            background-color: #f08632;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .invoice-details {
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+            .invoice-details h2 {
+                margin-top: 0;
+            }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .invoice-table th, .invoice-table td {
+                border: 1px solid #dddddd;
+                padding: 10px;
+            }
+
+            .invoice-table th {
+                background-color: #f2f2f2;
+            }
+
+        .footer {
+            background-color: #f08632;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+         
+            <h1>Invoice</h1>
+        </div>
+
+        <div class="invoice-details">
+            <h2>Invoice Details</h2>
+            <p><strong>Invoice Number:</strong> @Model.OrderId</p>
+            <p><strong>Date:</strong>@Model.CreatedAt</p>
+            <p><strong>Customer:</strong>@Model.User.UserName</p>
+        </div>
+
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+               
+                    <th>Price</th>
+               
+                </tr>
+            </thead>
+            <tbody>
+             
+                <tr>
+                    <td>@Model.Recipe.RecipeName</td>
+            
+                    <td>@Model.OrderPrice</td>
+                </tr>
+                <!-- Add more rows for additional products -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Subtotal:</strong></td>
+                    <td>@Model.OrderPrice</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Tax:</strong></td>
+                    <td>@Model.OrderPrice</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                    <td>@Model.OrderPrice</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+    </div>
+
+</body>
+</html>
+

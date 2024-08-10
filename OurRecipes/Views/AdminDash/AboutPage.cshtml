@@ -140,7 +140,14 @@
                     "columns": [
                     { "data": "aboutId" },
                     { "data": "aboutTitle" },
-                    { "data": "aboutBody" },
+                    {
+                        "data": "aboutBody",
+                        "render": function (data, type, full, meta) {
+                            // Display only the first 100 characters followed by "..." if the text exceeds that length
+                            return data.length > 10 ? data.substr(0, 10) + "..." : data;
+                        }
+                    },
+                  
                      
                         {
                             "data": null, // Edit column

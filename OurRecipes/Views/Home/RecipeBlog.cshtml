@@ -308,6 +308,7 @@
                 localStorage.removeItem("selectedTypeId");
                 localStorage.removeItem("selectedCatId");
                 $('#searchBtn').click();
+                catId=null;
                 }
 
 
@@ -373,7 +374,7 @@
                                     <p>
                                         ${recipe.recipeDescription}
                                     </p>
-                                        <a href="/Home/Checkout/${recipe.recipeId}">Order Now</a>
+                                        <a href="/Home/Checkout/${recipe.recipeId}">Read more</a>
                                 </div>
                             </div>`
 

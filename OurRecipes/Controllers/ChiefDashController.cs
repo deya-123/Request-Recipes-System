@@ -23,6 +23,8 @@ namespace OurRecipes.Controllers
         }
         public IActionResult Index()
         {
+            var home = _context.Homes.FirstOrDefault();
+            SharedData.Logo = home?.HomeLogo ?? "";
             return RedirectToAction("RecipesPage");
         }
         public IActionResult OrdersPage() => View();

@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\OurRecipes"
+    "\\OurRecipes",
+    "\\OurRecipes\\Views",
+    "\\OurRecipes\\Views\\Auth",
+    "\\OurRecipes\\Views\\ChiefDash",
+    "\\OurRecipes\\Views\\Home",
+    "\\OurRecipes\\Views\\Orders",
+    "\\OurRecipes\\Views\\Shared",
+    "\\OurRecipes\\Views\\UserDash",
+    "\\OurRecipes\\Views\\Users"
   ],
+  "SelectedNode": "\\OurRecipes\\OurRecipes.sln",
   "PreviewInSolutionExplorer": false
 }

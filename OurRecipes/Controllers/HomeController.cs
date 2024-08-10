@@ -93,7 +93,7 @@ namespace OurRecipes.Controllers
             ViewBag.About = _context.Abouts.FirstOrDefault();
             ViewBag.ContactInfo = _context.ContactInfos.FirstOrDefault();
             ViewBag.RecipesCount = _context.Recipes.Count();
-            ViewBag.UsersCount = _context.Users.Count(e => e.UserId == 1);
+            ViewBag.UsersCount = _context.Users.Count(e => e.RoleId == 2);
             ViewBag.ChiefsCount = _context.Chiefs.Count();
 
 
@@ -123,6 +123,7 @@ namespace OurRecipes.Controllers
                                  on recipe.RecipeCategoryId equals category.CategoryId
                                  join type in _context.RecipeCategoryTypes
                                  on category.CategoryTypeId equals type.RecipeCategoryTypeId
+                                 where recipe.RecipeStatus== "Accepted"
                                  group recipe by new { type.RecipeCategoryTypeId, type.RecipeCategoryTypeName } into g
                                  select new
                                  {
@@ -141,7 +142,37 @@ namespace OurRecipes.Controllers
             return View();
         }
 
-    
+
+
+        public IActionResult RecipeDetails(int recipeId) {
+
+           Recipe recipe= _context.Recipes.Include(e=>e.Chief).ThenInclude(e=>e.User).Include(e => e.RecipePreparationSteps).Include(e => e.RecipeNotes).Include(e=>e.Ingredients).ThenInclude(e=>e.IngredientUnit).First(e => e.RecipeId == recipeId);
+
+
+            ViewBag.Home = _context.Homes.FirstOrDefault();
+
+
+
+            SharedData.Logo = (string)ViewBag.Home.HomeLogo;
+
+            ViewBag.About = _context.Abouts.FirstOrDefault();
+            ViewBag.ContactInfo = _context.ContactInfos.FirstOrDefault();
+            ViewBag.Categories = _context.RecipeCategories.ToList();
+            ViewBag.Chiefs = _context.Chiefs.Include(e => e.User).ToList();
+            ViewBag.Testimonials = _context.Testimonials.Where(e => e.TestimonialStatus == "Accepted").Include(e => e.User).ThenInclude(e => e.UserCountry)
+                .ToList();
+            ViewBag.RecipesCount = _context.Recipes.Count();
+            ViewBag.UsersCount = _context.Users.Count(e => e.RoleId == 3);
+            ViewBag.ChiefsCount = _context.Chiefs.Count();
+
+
+
+
+
+
+            return View(recipe);
+        }
+
 
         public IActionResult Contact()
         {
@@ -159,6 +190,24 @@ namespace OurRecipes.Controllers
         public IActionResult Checkout(decimal id) {
 
 
+
+            if (HttpContext.Session.GetInt32("userId") == null) {
+
+                return RedirectToAction("Login", "Auth");
+
+            }
+
+            else if (_context.Orders.Any(e => e.UserId == HttpContext.Session.GetInt32("userId") && e.RecipeId == id))
+            {
+                return RedirectToAction("RecipeDetails", "Home",new { recipeId=id});
+                 
+            }
+
+
+
+
+           
+
            var recipe= _context.Recipes.FirstOrDefault(e => e.RecipeId == id);
             ViewBag.Home = _context.Homes.FirstOrDefault();
             ViewBag.About = _context.Abouts.FirstOrDefault();
@@ -170,17 +219,29 @@ namespace OurRecipes.Controllers
         }
 
 
-        public IActionResult RecipePdfTemplate()
+        //public IActionResult RecipePdfTemplate()
+        //{
+            
+
+        //    return new ViewAsPdf("RecipePdfTemplate")
+        //    {
+        //        FileName = "RecipePdfTemplate.pdf"
+        //    };
+        //}
+
+
+        public async Task<IActionResult> RecipePdfTemplate(int recipeId)
         {
-            // Sample invoice data
-            // Here, we have hardcoded the data,
 
+            Recipe recipe = _context.Recipes.Include(e => e.Chief).ThenInclude(e => e.User).Include(e => e.RecipePreparationSteps).Include(e => e.RecipeNotes).Include(e => e.Ingredients).ThenInclude(e => e.IngredientUnit).First(e => e.RecipeId == recipeId);
 
-            return new ViewAsPdf("RecipePdfTemplate")
+           return new ViewAsPdf("RecipePdfTemplate", recipe)
             {
-                FileName = "RecipePdfTemplate.pdf"
+                FileName = "Recipe.pdf"
             };
+          
         }
+
 
         //public async Task<IActionResult> RecipePdfTemplate()
         //{
@@ -223,7 +284,7 @@ namespace OurRecipes.Controllers
             ViewBag.Testimonials = _context.Testimonials.Where(e=>e.TestimonialStatus=="Accepted").Include(e=>e.User).ThenInclude(e=>e.UserCountry)
                 .ToList();
             ViewBag.RecipesCount= _context.Recipes.Count();
-            ViewBag.UsersCount= _context.Users.Count(e=>e.RoleId==3);
+            ViewBag.UsersCount= _context.Users.Count(e=>e.RoleId==2);
             ViewBag.ChiefsCount= _context.Chiefs.Count();
 
 

@@ -6,8 +6,6 @@
 
 
 
-
-
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row g-2 align-items-center">
@@ -29,10 +27,10 @@
                     </a>
                     </span>*@
 
-                  @*  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Create new Recipe
+                    @*  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    Create new Recipe
                     </a>*@
                     <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -49,22 +47,24 @@
 
         <div class="card">
             <div class="row mb-3" style="padding : 16px; align-self: center; ">
-        <div class="col-auto">
-            <label for="startDate" class="form-label">Start Date:</label>
-            <input type="date" id="startDate" class="form-control">
-        </div>
-        <div class="col-auto">
-            <label for="endDate" class="form-label">End Date:</label>
-            <input type="date" id="endDate" class="form-control">
-        </div>
-        <div class="col-auto align-self-end">
-            <button id="searchBtn" class="btn btn-primary">Search</button>
-        </div>
-    </div>
+                <div class="col-auto">
+                    <label for="startDate" class="form-label">Monthly</label>
+                    <input type="month" id="input-monthly" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <label for="endDate" class="form-label">Yearly</label>
+                    <input type="number" id="input-yearly" min="2016" class="form-control" max="2050" step="1" value="2016" />
+                </div>
+                <div class="col-auto align-self-end">
+                    <button id="searchBtn" class="btn btn-primary">Search</button>
+                </div>
+                
+
+            </div>
 
 
 
-            <div class="table-responsive" style="padding-left : 20px;padding-right: 20px;    ">
+            <div class="table-responsive" id="pdf" style="padding-left : 20px;padding-right: 20px;    ">
                 <table id="example" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
                     <thead>
                         <tr>
@@ -75,14 +75,22 @@
                             <th>User Name</th>
                             <th>Chief Name</th>
                             <th>Created At</th>
-                         @*   <th>Details</th>*@
-                    
+                            @*   <th>Details</th>*@
+
                         </tr>
                     </thead>
                     <tbody>
 
                         <!-- Additional rows as needed -->
                     </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total</th>
+                            <th></th>
+                            <th colspan="4"></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -96,19 +104,26 @@
 
 @section Scripts {
 
+
     <script>
 
 
 
 
-
-
         document.addEventListener('DOMContentLoaded', function () {
-  
 
-          
-          var recipeIdNow = 1;
-          var table = $('#example').DataTable({
+
+
+            var recipeIdNow = 1;
+            var table = $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', {
+                        extend: 'pdf',
+                        footer: true,
+                        title: 'Orders Report' 
+                    },
+                ],
                 responsive: true,
                 "scrollX": true,
                 "pagingType": "full_numbers",
@@ -133,135 +148,193 @@
                         "previous": '<'  // Change as per need
                     }
                 },
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api();
+                    var numFormat = $.fn.dataTable.render.number(',', '.', 2, '$').display;
 
+                    // Calculate the total order price
+                    var totalPrice = api.column(2, { search: 'applied' }).data()
+                        .reduce(function (acc, val) {
+                            return acc + parseFloat(val);
+                        }, 0);
 
-            });
-          $('#example tbody').on('click', 'button', function () {
-            var action = this.textContent.trim();
-            var rowData = table.row($(this).parents('tr')).data();
-            var recipeId = rowData['recipeId'];
-
-            recipeIdNow = recipeId;
-            if (action === 'Ingredients') {
-                document.getElementById("tttt").value=recipeIdNow;
-                ingredientsTable.ajax.reload();
-            }
-            else if (action === 'Steps') {
-                document.getElementById("recipeIdStep").value=recipeIdNow;
-                stepsTable.ajax.reload();
-            }
-
-              else  if (action === 'Notes') {
-                document.getElementById("recipeIdNote").value = recipeIdNow;
-                notesTable.ajax.reload();
+                    // Update the footer with the total order price
+                    $(api.column(2).footer()).html(numFormat(totalPrice));
                 }
 
 
-            else if (action === 'Details') {
-                $.ajax({
-                    url: '@Url.Action("GetRecipeById", "Recipes")',
-                    type: 'GET',
-                    data: { id: recipeId },
-                    success: function (data) {
+            });
+            $('#example tbody').on('click', 'button', function () {
+                var action = this.textContent.trim();
+                var rowData = table.row($(this).parents('tr')).data();
+                var recipeId = rowData['recipeId'];
+
+                recipeIdNow = recipeId;
+                if (action === 'Ingredients') {
+                    document.getElementById("tttt").value = recipeIdNow;
+                    ingredientsTable.ajax.reload();
+                }
+                else if (action === 'Steps') {
+                    document.getElementById("recipeIdStep").value = recipeIdNow;
+                    stepsTable.ajax.reload();
+                }
+
+                else if (action === 'Notes') {
+                    document.getElementById("recipeIdNote").value = recipeIdNow;
+                    notesTable.ajax.reload();
+                }
 
 
-                        var edit = document.getElementById("editForm");
-                        edit.RecipeViewModel_RecipeName.value = data.recipeName;
+                else if (action === 'Details') {
+                    $.ajax({
+                        url: '@Url.Action("GetRecipeById", "Recipes")',
+                        type: 'GET',
+                        data: { id: recipeId },
+                        success: function (data) {
 
-                        edit.RecipeViewModel_RecipeStatus.value = data.recipeStatus;
-                        edit.RecipeViewModel_RecipePrice.value = data.recipePrice;
-                        edit.RecipeViewModel_RecipeCookingTimeMinutes.value = data.recipeCookingTimeMinutes;
-                        edit.RecipeViewModel_RecipePreparingTimeMinutes.value = data.recipePreparingTimeMinutes;
-                        edit.RecipeViewModel_RecipeDescription.value = data.recipeDescription;
-                        edit.RecipeViewModel_RecipeExplanation.value = data.recipeExplanation;
-                        edit.RecipeViewModel_RecipeId.value = data.recipeId;
-                        edit.RecipeViewModel_RecipeCategoryId.value = data.categoryId;
-                        edit.RecipeViewModel_RecipeServings.value = data.recipeServings;
 
-                         document.getElementById("RecipeCardImgPathEdit").src = '/recipesImage/' + data.recipeCardImgPath;
-                         document.getElementById("RecipeVideoPathEdit").src = '/recipesVideos/' + data.recipeVideoPath;
-                         document.getElementById("RecipeMainImgPathEdit").src = '/recipesImage/' + data.recipeMainImgPath;
-                       
-                        // Populate other fields...
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        console.log('Error fetching user data:', errorThrown);
-                    }
-                });
-            } 
-            else if (action ==='Change Status'){
-                   $.ajax({
-                    url: '@Url.Action("GetRecipeById", "Recipes")',
-                    type: 'GET',
-                    data: { id: recipeId },
-                    success: function (data) {
-   
-                   var edit = document.getElementById("updateStatusForm");
-                      
+                            var edit = document.getElementById("editForm");
+                            edit.RecipeViewModel_RecipeName.value = data.recipeName;
 
-                    edit.UpdateStatusViewModel_RecipeStatus.value = data.recipeStatus;
-                    edit.UpdateStatusViewModel_RecipeId.value = data.recipeId;
-                   
+                            edit.RecipeViewModel_RecipeStatus.value = data.recipeStatus;
+                            edit.RecipeViewModel_RecipePrice.value = data.recipePrice;
+                            edit.RecipeViewModel_RecipeCookingTimeMinutes.value = data.recipeCookingTimeMinutes;
+                            edit.RecipeViewModel_RecipePreparingTimeMinutes.value = data.recipePreparingTimeMinutes;
+                            edit.RecipeViewModel_RecipeDescription.value = data.recipeDescription;
+                            edit.RecipeViewModel_RecipeExplanation.value = data.recipeExplanation;
+                            edit.RecipeViewModel_RecipeId.value = data.recipeId;
+                            edit.RecipeViewModel_RecipeCategoryId.value = data.categoryId;
+                            edit.RecipeViewModel_RecipeServings.value = data.recipeServings;
 
-                    edit.action = "@Url.Action("UpdateStatus", "Recipes")";
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        console.log('Error fetching user data:', errorThrown);
-                    }
-                });
+                            document.getElementById("RecipeCardImgPathEdit").src = '/recipesImage/' + data.recipeCardImgPath;
+                            document.getElementById("RecipeVideoPathEdit").src = '/recipesVideos/' + data.recipeVideoPath;
+                            document.getElementById("RecipeMainImgPathEdit").src = '/recipesImage/' + data.recipeMainImgPath;
 
-               
-            
-            }
-        });
-     
-        
-        
-      
-         
+                            // Populate other fields...
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error fetching user data:', errorThrown);
+                        }
+                    });
+                }
+                else if (action === 'Change Status') {
+                    $.ajax({
+                        url: '@Url.Action("GetRecipeById", "Recipes")',
+                        type: 'GET',
+                        data: { id: recipeId },
+                        success: function (data) {
+
+                            var edit = document.getElementById("updateStatusForm");
+
+
+                            edit.UpdateStatusViewModel_RecipeStatus.value = data.recipeStatus;
+                            edit.UpdateStatusViewModel_RecipeId.value = data.recipeId;
+
+
+                            edit.action = "@Url.Action("UpdateStatus", "Recipes")";
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error fetching user data:', errorThrown);
+                        }
+                    });
 
 
 
+                }
+            });
 
-
-
-
-
-
+            var my = false;
 
             $('#searchBtn').on('click', function () {
-                var startDate = $('#startDate').val();
-                var endDate = $('#endDate').val();
+                var inputMonthly = $('#input-monthly').val();
+                var inputYearly = $('#input-yearly').val();
 
-                // Send AJAX request to the backend
-                $.ajax({
-                    url: '@Url.Action("SearchByDate", "Recipes")', // Change the URL to your backend endpoint
-                    type: 'GET',
-                    data: { minDate: startDate, maxDate: endDate },
-                    success: function (response) {
-                        // Update DataTable with new data
-                        table.clear().rows.add(response.data).draw();
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle error
-                        console.error(error);
-                    }
-                });
+
+
+                if (my == false) {
+
+                    console.log(inputYearly);
+
+
+                    $.ajax({
+                        url: '@Url.Action("LoadDataByYear", "Orders")', // Change the URL to your backend endpoint
+                        type: 'GET',
+                        data: { year: inputYearly },
+                        success: function (response) {
+
+                            table.clear().rows.add(response.data).draw();
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(error);
+                        }
+                    });
+
+                }
+
+                else if (my == true) {
+
+                    console.log(inputMonthly);
+
+
+                    $.ajax({
+                        url: '@Url.Action("LoadDataByMonth", "Orders")', // change the url to your backend endpoint
+                        type: 'GET',
+                        data: { month: inputMonthly },
+                        success: function (response) {
+
+                            table.clear().rows.add(response.data).draw();
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(error);
+                        }
+                    });
+
+                }
+
+
+
+            });
+
+
+
+            var inputMonthly = document.getElementById('input-monthly');
+            var inputYearly = document.getElementById('input-yearly');
+
+            inputMonthly.addEventListener('change', () => {
+
+                inputYearly.value = null;
+                my = true;
+
+
+            });
+
+            inputYearly.addEventListener('input', () => {
+
+                inputMonthly.value = null;
+                my = false;
+                console.log(my);
+
             });
 
        
-   
-     
 
-           
-      
-           
-       
-    
-      
-     
 
-                });
+            var elements = document.querySelectorAll('.buttons-html5');
+
+            // Loop through each element
+            elements.forEach(function (element) {
+                // Remove existing classes
+                element.className = '';
+
+                // Assign 'btn btn-primary' class
+                element.classList.add('btn', 'btn-primary');
+            });
+
+
+
+        });
 
 
 
@@ -307,3 +380,8 @@
             font-size: 14px; /* Optional: Increase font size if needed */
         }
     </style>
+
+
+
+
+

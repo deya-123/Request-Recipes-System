@@ -465,10 +465,10 @@ namespace OurRecipes.Controllers
 
         public ActionResult SearchByDate(DateTime? minDate, DateTime? maxDate)
          {
-        IQueryable<Recipe> query = _context.Recipes.Where(e=>e.RecipeStatus== "Accepted");
+        IQueryable<Recipe> query = _context.Recipes;
 
-      
-        if (minDate != null)
+
+            if (minDate != null)
         {
             query = query.Where(r => r.CreatedAt >= minDate);
         }
@@ -532,12 +532,12 @@ namespace OurRecipes.Controllers
         {
 
 
-            IQueryable<Recipe> query = _context.Recipes;
+            IQueryable<Recipe> query = _context.Recipes.Where(e => e.RecipeStatus == "Accepted");
 
 
             if (recipeName != null)
             {
-                query = query.Where(r => r.RecipeName!=null && r.RecipeName.Contains(recipeName));
+                query = query.Where(r => r.RecipeName!=null && r.RecipeName.ToLower().Contains(recipeName.ToLower()));
             }
             if (categoryNameId > 0)
             {

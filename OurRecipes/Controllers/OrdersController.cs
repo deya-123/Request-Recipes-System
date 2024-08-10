@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using OurRecipes.Data;
 using OurRecipes.Models;
+using OurRecipes.Services;
 using OurRecipes.ViewModels;
+using Rotativa.AspNetCore;
 
 namespace OurRecipes.Controllers
 {
@@ -16,12 +19,15 @@ namespace OurRecipes.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
+     
 
 
         public OrdersController(AppDbContext context, IToastNotification notyf)
         {
             _context = context;
             _toastNotification = notyf;
+       
+
         }
 
         // GET: Orders
@@ -166,9 +172,72 @@ namespace OurRecipes.Controllers
         }
 
 
+        public async Task RecipePdfTemplate(int recipeId)
+        {
+
+            Recipe recipe = _context.Recipes.Include(e => e.Chief).ThenInclude(e => e.User).Include(e => e.RecipePreparationSteps).Include(e => e.RecipeNotes).Include(e => e.Ingredients).ThenInclude(e => e.IngredientUnit).First(e => e.RecipeId == recipeId);
+
+            var pdf = new ViewAsPdf("RecipePdfTemplate", recipe)
+            {
+                FileName = "Recipe.pdf"
+            };
+            var pdfBytes = await pdf.BuildFile(ControllerContext);
+
+
+            var userEmail = "albettardeaa@gmail.com";
+
+
+            if (HttpContext.Session.GetInt32("userId") != null) {
+
+                userEmail = _context.Users.First(e => e.UserId == HttpContext.Session.GetInt32("userId")).UserEmail;
+
+
+            }
+
+
+            using (var memoryStream = new MemoryStream(pdfBytes))
+            {
+                await EmailService.
+                   SendEmailWithAttachment(memoryStream, userEmail, "Recipe PDF", "See attached PDF for recipe","Recipe");
+            }
+
+        }
+
+        public async Task InvoicePdfTemplate(int orderId)
+        {
 
 
 
+            Order order  = _context.Orders.Where(e=>e.OrderId== orderId).Include(e=>e.Recipe).Include(e => e.User).First();
+
+           var pdf= new ViewAsPdf("InvoicePdfTemplate", order)
+            {
+                
+                FileName = "Invoice.pdf",
+                
+            };
+            var pdfBytes = await pdf.BuildFile(ControllerContext);
+
+            var userEmail = "albettardeaa@gmail.com";
+
+
+            if (HttpContext.Session.GetInt32("userId") != null)
+            {
+
+                userEmail = _context.Users.First(e => e.UserId == HttpContext.Session.GetInt32("userId")).UserEmail;
+
+
+            }
+
+
+
+            using (var memoryStream = new MemoryStream(pdfBytes))
+            {
+                await EmailService.
+                   SendEmailWithAttachment(memoryStream, userEmail, "Invoice PDF", "See attached PDF for Invoice", "Invoice");
+            }
+
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PlaceOrder(PlaceOrderViewModel placeOrderViewModel)
@@ -203,6 +272,10 @@ namespace OurRecipes.Controllers
                         order.RecipeId = recipe.RecipeId;
                         _context.Add(order);
                         await _context.SaveChangesAsync();
+
+                       await RecipePdfTemplate((int)placeOrderViewModel.RecipeId);
+                       await InvoicePdfTemplate((int)order.OrderId);
+                  
                         _toastNotification.AddSuccessToastMessage("The operation was completed successfully", new NotyOptions()
                         {
                             ProgressBar = true,
@@ -266,6 +339,76 @@ namespace OurRecipes.Controllers
                 .ToList()
             });
         }
+
+
+
+
+        [HttpGet]
+        public ActionResult LoadDataByMonth(string month)
+        {
+            if (string.IsNullOrEmpty(month) || !DateTime.TryParse(month + "-01", out DateTime startDate))
+            {
+                return BadRequest("Invalid month format");
+            }
+
+            var endDate = startDate.AddMonths(1);
+
+            var orders = _context.Orders
+                .Include(e => e.User)
+                .Include(e => e.Recipe)
+                    .ThenInclude(e => e.Chief)
+                .Where(e => e.CreatedAt >= startDate && e.CreatedAt < endDate)
+                .Select(e => new
+                {
+                    e.OrderId,
+                    e.OrderStatus,
+                    e.OrderPrice,
+                    e.UserId,
+                    RecipeName = e.Recipe.RecipeName,
+                    UserName = e.User.UserName,
+                    ChiefName = e.Recipe.Chief.User.UserName,
+                    e.RecipeId,
+                    CreatedAt = e.CreatedAt != null ? e.CreatedAt.Value.Date.ToShortDateString() : null,
+                })
+                .ToList();
+
+            return Json(new { data = orders });
+        }
+
+        [HttpGet]
+        public ActionResult LoadDataByYear(int? year)
+        {
+            if (!year.HasValue)
+            {
+                return BadRequest("Year parameter is required");
+            }
+
+            var startDate = new DateTime(year.Value, 1, 1);
+            var endDate = startDate.AddYears(1);
+
+            var orders = _context.Orders
+                .Include(e => e.User)
+                .Include(e => e.Recipe)
+                    .ThenInclude(e => e.Chief)
+                .Where(e => e.CreatedAt >= startDate && e.CreatedAt < endDate)
+                .Select(e => new
+                {
+                    e.OrderId,
+                    e.OrderStatus,
+                    e.OrderPrice,
+                    e.UserId,
+                    RecipeName = e.Recipe.RecipeName,
+                    UserName = e.User.UserName,
+                    ChiefName = e.Recipe.Chief.User.UserName,
+                    e.RecipeId,
+                    CreatedAt = e.CreatedAt != null ? e.CreatedAt.Value.Date.ToShortDateString() : null,
+                })
+                .ToList();
+
+            return Json(new { data = orders });
+        }
+
+
 
         public ActionResult LoadDataByChiefId(decimal id)
         {

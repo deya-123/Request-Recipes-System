@@ -9,6 +9,7 @@ using OurRecipes.Data;
 using Rotativa.AspNetCore;
 using Sieve.Services;
 using System.Configuration;
+using System.Text.Json.Serialization;
 
 namespace OurRecipes
 {
@@ -68,9 +69,17 @@ namespace OurRecipes
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
             builder.Services.AddRazorPages();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
             builder.Services.AddAutoMapper(typeof(Program));
+          
             var app = builder.Build();
-            RotativaConfiguration.Setup(app.Environment.WebRootPath, @"C:\\Program Files\\wkhtmltopdf\\bin");
+
+            var path=Path.Combine(Directory.GetCurrentDirectory(), "wkhtmltopdf", "bin");
+            RotativaConfiguration.Setup(app.Environment.WebRootPath, path);
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -85,7 +94,7 @@ namespace OurRecipes
                 app.UseSwaggerUI();
             }
 
-
+          
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseIpRateLimiting();
@@ -98,7 +107,7 @@ namespace OurRecipes
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
+          
             app.Run();
         }
     }

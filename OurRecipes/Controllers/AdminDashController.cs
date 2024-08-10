@@ -18,7 +18,7 @@ namespace OurRecipes.Controllers
         private readonly IToastNotification _toastNotification;
         public AdminDashController(AppDbContext context, IMapper mapper, IToastNotification notyf)
         {
-          
+
 
             _mapper = mapper;
             _context = context;
@@ -26,7 +26,8 @@ namespace OurRecipes.Controllers
         }
         public IActionResult Index()
         {
-   
+            var home = _context.Homes.FirstOrDefault();
+            SharedData.Logo = home?.HomeLogo ?? "";
 
             return RedirectToAction("StatisticsPage");
         }
@@ -52,8 +53,34 @@ namespace OurRecipes.Controllers
         {
 
             ViewBag.ChiefsCount = await _context.Chiefs.CountAsync();
-            ViewBag.UsersCount = await _context.Users.Where(e=>e.RoleId==2).CountAsync();
+            ViewBag.UsersCount = await _context.Users.Where(e => e.RoleId == 2).CountAsync();
             ViewBag.RecipesCount = await _context.Recipes.CountAsync();
+            ViewBag.OrdersCount = await _context.Orders.CountAsync();
+
+
+
+            var today = DateTime.Today.AddDays(1);
+            var tenDaysAgo = today.AddDays(-9);
+
+
+            var ordersPerDay = _context.Orders
+      .Where(o => o.CreatedAt >= tenDaysAgo && o.CreatedAt <= today && o.CreatedAt != null)
+      .GroupBy(o => o.CreatedAt!.Value.Date)
+      .OrderBy(g => g.Key)
+      .Select(g => new { Day = g.Key, OrderCount = g.Count() })
+      .ToList();
+
+
+            var labels = ordersPerDay.Select(d => d.Day.ToString("yyyy-MM-dd")).ToArray();
+            var orderCounts = ordersPerDay.Select(d => d.OrderCount).ToArray();
+
+
+            ViewBag.ChartLabels = labels;
+            ViewBag.OrderCounts = orderCounts;
+            ViewBag.OrderRevenue = await _context.Orders.Where(o => o.CreatedAt >= tenDaysAgo && o.CreatedAt <= today && o.CreatedAt != null).SumAsync(e=>e.OrderPrice);
+
+
+
             return View();
 
         }
@@ -77,8 +104,9 @@ namespace OurRecipes.Controllers
         {
             ViewBag.Countries = _context.Countries.ToList();
             var user = await _context.Users.FirstOrDefaultAsync(e => e.UserId == HttpContext.Session.GetInt32("userId"));
-            
-            if (user != null) {
+
+            if (user != null)
+            {
                 return View(_mapper.Map<User, UserProfileViewModel>(user));
 
             }

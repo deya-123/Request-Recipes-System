@@ -28,8 +28,8 @@ namespace OurRecipes.Services
         }
         public static async Task SendEmailAsync(string to, string subject, string htmlMessage)
         {
-            string fromMail = "deaaaldeen45112@gmail.com";
-            string fromPassword = "jjjagamtpjcuekoi";
+            string fromMail = "discoverourrecipes@gmail.com";
+            string fromPassword = "afiochmpiialibhs";
 
 
             using (var smtpClient = new SmtpClient("smtp.gmail.com"))
@@ -58,14 +58,14 @@ namespace OurRecipes.Services
 
 
         }
-        public static async Task SendEmailWithAttachment(Stream attachmentStream, string to, string subject, string body)
+        public static async Task SendEmailWithAttachment(Stream attachmentStream, string to, string subject, string body,string name)
         {
 
 
 
 
-            string fromMail = "deaaaldeen45112@gmail.com";
-            string fromPassword = "jjjagamtpjcuekoi";
+            string fromMail = "discoverourrecipes@gmail.com";
+            string fromPassword = "afiochmpiialibhs";
 
 
             using (var smtpClient = new SmtpClient("smtp.gmail.com"))
@@ -84,7 +84,7 @@ namespace OurRecipes.Services
                     message.To.Add(new MailAddress(to));
                     message.Body = body;
                     message.IsBodyHtml = true;
-                    message.Attachments.Add(new Attachment(attachmentStream, "RecipePdfTemplate.pdf", "application/pdf"));
+                    message.Attachments.Add(new Attachment(attachmentStream, name, "application/pdf"));
                     await smtpClient.SendMailAsync(message);
                 }
 
@@ -94,6 +94,9 @@ namespace OurRecipes.Services
 
 
         }
+
+
+
      
     }
 }

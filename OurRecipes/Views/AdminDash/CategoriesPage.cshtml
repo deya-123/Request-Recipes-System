@@ -303,6 +303,7 @@
                                 table.page(currentPage).draw(false);
                             });
                             console.log('User created successfully.');
+                            showSuccessToast('successfully.')
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             // Handle the error response if needed
@@ -329,6 +330,7 @@
                             // Handle the success response if needed
                             $('.datatable').DataTable().ajax.reload();
                             console.log('Testimonial created successfully.');
+                            showSuccessToast('successfully.')
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             // Handle the error response if needed
@@ -353,6 +355,7 @@
                             // Handle the success response if needed
                             $('.datatable').DataTable().ajax.reload();
                             console.log('User created successfully.');
+                            showSuccessToast('successfully.')
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             // Handle the error response if needed

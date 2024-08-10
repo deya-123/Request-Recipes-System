@@ -8,6 +8,8 @@ using OurRecipes.Models;
 using OurRecipes.Services;
 using OurRecipes.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace OurRecipes.Controllers
 {
@@ -16,10 +18,15 @@ namespace OurRecipes.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IToastNotification _toastNotification;
+    
+
+  
         public AuthController(AppDbContext context, IToastNotification notyf)
         {
             _context = context;
             _toastNotification = notyf;
+        
+
         }
         [HttpGet]
         public IActionResult LoginByGmail()
@@ -68,6 +75,16 @@ namespace OurRecipes.Controllers
                     HttpContext.Session.SetInt32("roleId", (int) user.RoleId);
                     HttpContext.Session.SetString("roleName", roleName??"");
                     HttpContext.Session.SetString("userImage",user.UserImage??"");
+
+                    //var connectionId = HttpContext.Session.GetString("ConnectionId");
+                    //if (!string.IsNullOrEmpty(connectionId))
+                    //{
+                         
+                    //    _hubContext.Clients.Client(connectionId).SendAsync("RegisterUser", user.UserId, connectionId);
+
+                    //}
+
+
                     switch (roleName.ToLower())
                     {
                         case "admin":
@@ -119,7 +136,6 @@ namespace OurRecipes.Controllers
                         Timeout = 2000,
                         Theme = "metroui",
                         Layout = "bottomCenter",
-
                     });
 
                     return View(registerViewModel);

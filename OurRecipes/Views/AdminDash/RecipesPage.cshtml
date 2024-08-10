@@ -396,7 +396,7 @@
 
                            <div class="mb-3">
                         <label class="form-label" asp-for="@Model.IngredientViewModel.IngredientQuantity">Ingredient Quantity</label>
-                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" min="1" class="form-control" placeholder="">
+                        <input asp-for="@Model.IngredientViewModel.IngredientQuantity" type="text" class="form-control" placeholder="">
                         <span asp-validation-for="@Model.IngredientViewModel.IngredientQuantity" class="text-danger"></span>
                     </div>
                           <div class="mb-3">
@@ -534,8 +534,8 @@
 
 <!--   **************************************************  Steps ********************************************       -->
 
-<div class="modal modal-blur fade" id="modal-steps" tabindex="-1" style="display: none;" aria-modal="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal modal-blur" id="modal-steps" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -732,8 +732,8 @@
 
 <!--   **************************************************  Notes ********************************************       -->
 
-<div class="modal modal-blur fade" id="modal-note" tabindex="-1" style="display: none;" aria-modal="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal modal-blur" id="modal-note" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -977,8 +977,21 @@
                     { "data": "recipeCookingTimeMinutes" },
                     { "data": "recipePreparingTimeMinutes" },
                     { "data": "recipeServings" },
-                    { "data": "recipeDescription" },
-                    { "data": "recipeExplanation" },
+                      {
+                        "data": "recipeDescription",
+                        "render": function (data, type, full, meta) {
+                            // Display only the first 100 characters followed by "..." if the text exceeds that length
+                            return data.length > 10 ? data.substr(0, 10) + "..." : data;
+                        }
+                    },
+                    {
+                        "data": "recipeExplanation",
+                        "render": function (data, type, full, meta) {
+                            // Display only the first 100 characters followed by "..." if the text exceeds that length
+                            return data.length > 10 ? data.substr(0, 10) + "..." : data;
+                        }
+                    },
+                    
                     { "data": "recipeStatus" },
                      { "data": "createdAt" },
                     {
@@ -1112,7 +1125,7 @@
                         // Handle the success response if needed
                          table.ajax.reload();
 
-                     
+                       showSuccessToast('successfully.')
                         console.log('User created successfully.');
                     },
                     error: function (xhr, textStatus, errorThrown) {
